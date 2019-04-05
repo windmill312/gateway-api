@@ -1,6 +1,6 @@
 server:
   address: 0.0.0.0
-  port: port: ${PORT:8080}
+  port: ${PORT:8080}
   servlet:
     context-path: /gateway
 server.error.whitelabel.enabled: false
@@ -43,7 +43,7 @@ gateway:
 
   grpc.client:
     CoffeeHouseServiceV1Grpc:
-      host: https://coffee-house-api.herokuapp.com/
+      host: coffee-house-api.herokuapp.com
       port: 8081
     ProductServiceV1Grpc:
       host: localhost
