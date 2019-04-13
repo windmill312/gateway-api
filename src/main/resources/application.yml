@@ -1,6 +1,6 @@
 server:
   address: 0.0.0.0
-  port: ${PORT:8080}
+  port: 8080
   servlet:
     context-path: /gateway
 server.error.whitelabel.enabled: false
@@ -8,7 +8,7 @@ server.error.whitelabel.enabled: false
 logging:
   path: logs
   level: DEBUG
-  level.com.sychev: DEBUG
+  level.com.github.windmill312: DEBUG
 
 spring:
   application:
@@ -43,7 +43,7 @@ gateway:
 
   grpc.client:
     CoffeeHouseServiceV1Grpc:
-      host: coffee-house-api.herokuapp.com
+      host: localhost
       port: 8081
     ProductServiceV1Grpc:
       host: localhost
