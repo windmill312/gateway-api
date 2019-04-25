@@ -20,7 +20,7 @@ public class AddProductRequest {
     private String description;
 
     @NotNull
-    private Integer price;
+    private Double price;
 
     @NotNull
     private ProductGroup productGroup;
@@ -29,7 +29,7 @@ public class AddProductRequest {
     public AddProductRequest(
             @JsonProperty("name") String name,
             @JsonProperty("description") String description,
-            @JsonProperty("price") Integer price,
+            @JsonProperty("price") Double price,
             @JsonProperty("productGroup") ProductGroup productGroup) {
         this.name = name;
         this.description = description;
@@ -45,7 +45,7 @@ public class AddProductRequest {
         return description;
     }
 
-    public Integer getPrice() {
+    public Double getPrice() {
         return price;
     }
 

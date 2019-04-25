@@ -10,14 +10,14 @@ public class ProductInfo {
     private UUID productUid = UUID.randomUUID();
     private String name;
     private String description;
-    private Integer price;
+    private Double price;
     private ProductGroup productGroup;
 
     public ProductInfo(
             UUID productUid,
             String name,
             String description,
-            Integer price,
+            Double price,
             ProductGroup productGroup) {
         this.productUid = productUid;
         this.name = name;
@@ -42,7 +42,7 @@ public class ProductInfo {
     }
 
     @JsonGetter("price")
-    public Integer getPrice() {
+    public Double getPrice() {
         return price;
     }
 

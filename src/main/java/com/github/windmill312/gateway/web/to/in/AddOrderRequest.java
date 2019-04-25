@@ -30,9 +30,6 @@ public class AddOrderRequest {
     private Double totalPrice;
 
     @NotNull
-    private Instant createDttm;
-
-    @NotNull
     private Instant receiveDttm;
 
     @NotNull
@@ -44,14 +41,12 @@ public class AddOrderRequest {
             @JsonProperty("customerUid") UUID customerUid,
             @JsonProperty("products") Set<OrderProducts> products,
             @JsonProperty("totalPrice") Double totalPrice,
-            @JsonProperty("createDttm") Instant createDttm,
             @JsonProperty("receiveDttm") Instant receiveDttm,
             @JsonProperty("status") OrderStatus status) {
         this.cafeUid = cafeUid;
         this.customerUid = customerUid;
         this.products = products;
         this.totalPrice = totalPrice;
-        this.createDttm = createDttm;
         this.receiveDttm = receiveDttm;
         this.status = status;
     }
@@ -72,9 +67,6 @@ public class AddOrderRequest {
         return totalPrice;
     }
 
-    public Instant getCreateDttm() {
-        return createDttm;
-    }
 
     public Instant getReceiveDttm() {
         return receiveDttm;

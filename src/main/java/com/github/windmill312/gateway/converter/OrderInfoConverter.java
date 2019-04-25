@@ -35,7 +35,6 @@ public class OrderInfoConverter {
                         .map(OrderInfoConverter::convert)
                         .collect(Collectors.toSet()),
                 orderInfo.getPrice(),
-                Instant.ofEpochMilli(orderInfo.getCreateMills()),
                 Instant.ofEpochMilli(orderInfo.getReceiveMills()),
                 convert(orderInfo.getStatus()));
     }
@@ -72,7 +71,6 @@ public class OrderInfoConverter {
                                 .map(OrderInfoConverter::convert)
                                 .collect(Collectors.toSet()))
                         .setPrice(request.getTotalPrice())
-                        .setCreateMills(request.getCreateDttm().toEpochMilli())
                         .setReceiveMills(request.getReceiveDttm().toEpochMilli())
                         .build())
                 .build();
@@ -89,7 +87,6 @@ public class OrderInfoConverter {
                                 .map(OrderInfoConverter::convert)
                                 .collect(Collectors.toSet()))
                         .setPrice(request.getTotalPrice())
-                        .setCreateMills(request.getCreateDttm().toEpochMilli())
                         .setReceiveMills(request.getReceiveDttm().toEpochMilli())
                         .build())
                 .build();

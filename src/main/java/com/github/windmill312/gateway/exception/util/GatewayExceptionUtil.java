@@ -26,6 +26,8 @@ public class GatewayExceptionUtil {
                 return HttpStatus.OK;
             case UNAUTHENTICATED:
                 return HttpStatus.UNAUTHORIZED;
+            case ALREADY_EXISTS:
+                return HttpStatus.CONFLICT;
             case PERMISSION_DENIED:
                 return HttpStatus.FORBIDDEN;
             case NOT_FOUND:
