@@ -54,7 +54,7 @@ public class CustomerServiceImpl implements CustomerService {
     public PagedResult<CustomerFullInfo> getAllCustomers(int page, int size) {
         GGetAllCustomersResponse response = rpcCustomerServiceClient.getAllCustomers(
                 GGetAllCustomersRequest.newBuilder()
-                        .setAuthentication(internalAuthService.getGAuthentication())
+                        .setAuthentication(AuthConverter.toGAuthentication(internalAuthService.getInternalAuthentication()))
                         .setPageable(CommonConverter.convert(page, size))
                         .build());
 
@@ -67,7 +67,7 @@ public class CustomerServiceImpl implements CustomerService {
         return CustomerInfoConverter.convert(
                 rpcCustomerServiceClient.getCustomer(
                         GGetCustomerRequest.newBuilder()
-                                .setAuthentication(internalAuthService.getGAuthentication())
+                                .setAuthentication(AuthConverter.toGAuthentication(internalAuthService.getInternalAuthentication()))
                                 .setCustomerUid(
                                         CommonConverter.convert(customerUid)).build()
                 ).getCustomer()
@@ -79,7 +79,7 @@ public class CustomerServiceImpl implements CustomerService {
     public UUID addCustomer(AddCustomerRequest request) {
         GPrincipalOuterKey principal = rpcPrincipalServiceClient.addPrincipal(
                 GAddPrincipalRequest.newBuilder()
-                        .setAuthentication(internalAuthService.getGAuthentication())
+                        .setAuthentication(AuthConverter.toGAuthentication(internalAuthService.getInternalAuthentication()))
                         .setPrincipalExtId(UUID.randomUUID().toString())
                         .setSubsystemCode(request.getSubsystemCode())
                         .build())
@@ -88,7 +88,7 @@ public class CustomerServiceImpl implements CustomerService {
         try {
             rpcCredentialsServiceClient.addCredentials(
                     GAddCredentialsRequest.newBuilder()
-                            .setAuthentication(internalAuthService.getGAuthentication())
+                            .setAuthentication(AuthConverter.toGAuthentication(internalAuthService.getInternalAuthentication()))
                             .setPrincipalKey(principal)
                             .setCredentials(AuthConverter.toGCredentials(request.getIdentifier(), request.getPassword()))
                             .build());
@@ -104,7 +104,7 @@ public class CustomerServiceImpl implements CustomerService {
 
             rpcPrincipalServiceClient.deletePrincipal(
                     GDeletePrincipalRequest.newBuilder()
-                            .setAuthentication(internalAuthService.getGAuthentication())
+                            .setAuthentication(AuthConverter.toGAuthentication(internalAuthService.getInternalAuthentication()))
                             .setPrincipalExtId(principal.getExtId())
                             .setSubsystemCode(request.getSubsystemCode())
                             .build()

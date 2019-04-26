@@ -37,7 +37,7 @@ public class OAuthServiceImpl implements OAuthService {
         return new OAuthCodeResponse(
                 rpcOAuthServiceClient.authorize(
                         GOAuthAuthorizeRequest.newBuilder()
-                                .setAuthentication(internalAuthService.getGAuthentication())
+                                .setAuthentication(AuthConverter.toGAuthentication(internalAuthService.getInternalAuthentication()))
                                 .setClientId(clientId)
                                 .setUserAccessToken(authentication.getToken())
                                 .build())
@@ -49,7 +49,7 @@ public class OAuthServiceImpl implements OAuthService {
         return AuthConverter.convert(
                 rpcOAuthServiceClient.getToken(
                         GOAuthTokenRequest.newBuilder()
-                                .setAuthentication(internalAuthService.getGAuthentication())
+                                .setAuthentication(AuthConverter.toGAuthentication(internalAuthService.getInternalAuthentication()))
                                 .setClientId(request.getClientId())
                                 .setClientSecret(request.getClientSecret())
                                 .setAuthorizationCode(request.getAuthorizationCode())
@@ -61,7 +61,7 @@ public class OAuthServiceImpl implements OAuthService {
         return AuthConverter.convert(
                 rpcOAuthServiceClient.refreshToken(
                         GOAuthRefreshTokenRequest.newBuilder()
-                                .setAuthentication(internalAuthService.getGAuthentication())
+                                .setAuthentication(AuthConverter.toGAuthentication(internalAuthService.getInternalAuthentication()))
                                 .setClientId(request.getClientId())
                                 .setClientSecret(request.getClientSecret())
                                 .setRefreshToken(request.getRefreshToken())

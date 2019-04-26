@@ -2,10 +2,12 @@ package com.github.windmill312.gateway.security;
 
 import com.github.windmill312.auth.grpc.model.v1.GAuthenticateServiceRequest;
 import com.github.windmill312.auth.grpc.model.v1.GAuthentication;
+import com.github.windmill312.auth.grpc.model.v1.GFullAuthentication;
 import com.github.windmill312.auth.grpc.model.v1.GGetAuthenticationRequest;
 import com.github.windmill312.gateway.converter.AuthConverter;
 import com.github.windmill312.gateway.grpc.client.GRpcAuthServiceClient;
 import com.github.windmill312.gateway.security.model.Authentication;
+import com.github.windmill312.gateway.security.model.FullAuthentication;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,7 +21,7 @@ public class InternalAuthService {
     private final GRpcAuthServiceClient rpcAuthServiceClient;
     private final GatewayCredentialsHolder credentialsHolder;
 
-    private Authentication internalAuthentication;
+    private FullAuthentication internalAuthentication;
 
     @Autowired
     public InternalAuthService(
@@ -29,13 +31,13 @@ public class InternalAuthService {
         this.credentialsHolder = credentialsHolder;
     }
 
-    public GAuthentication getGAuthentication() {
-        return AuthConverter.toGAuthentication(getInternalAuthentication());
+    public GFullAuthentication getGAuthentication() {
+        return AuthConverter.toGFullAuthentication(getInternalAuthentication());
     }
 
-    public Authentication getInternalAuthentication() {
+    public FullAuthentication getInternalAuthentication() {
         if (internalAuthentication == null || isAuthenticationExpired()) {
-            internalAuthentication = AuthConverter.toAuthentication(
+            internalAuthentication = AuthConverter.toFullAuthentication(
                     rpcAuthServiceClient.authenticateService(
                             GAuthenticateServiceRequest.newBuilder()
                                     .setServiceId(credentialsHolder.getServiceId())
@@ -52,7 +54,7 @@ public class InternalAuthService {
             rpcAuthServiceClient.getAuthentication(
                     GGetAuthenticationRequest.newBuilder()
                             .setAuthentication(AuthConverter.toGAuthentication(internalAuthentication))
-                            .setToken(internalAuthentication.getToken())
+                            .setToken(internalAuthentication.getAccessToken())
                             .build());
 
             return false;

@@ -1,5 +1,7 @@
 package com.github.windmill312.gateway.service.impl;
 
+import com.github.windmill312.gateway.converter.AuthConverter;
+import com.github.windmill312.gateway.security.InternalAuthService;
 import com.github.windmill312.order.grpc.model.v1.*;
 import com.github.windmill312.gateway.annotation.GatewayService;
 import com.github.windmill312.gateway.annotation.Logged;
@@ -23,10 +25,14 @@ import static com.github.windmill312.gateway.exception.model.Service.ORDER;
 public class OrderServiceImpl implements OrderService {
 
     private final GRpcOrderServiceClient rpcOrderServiceClient;
+    private final InternalAuthService internalAuthService;
 
     @Autowired
-    public OrderServiceImpl(GRpcOrderServiceClient rpcOrderServiceClient) {
+    public OrderServiceImpl(
+            GRpcOrderServiceClient rpcOrderServiceClient,
+            InternalAuthService internalAuthService) {
         this.rpcOrderServiceClient = rpcOrderServiceClient;
+        this.internalAuthService = internalAuthService;
     }
 
     @Logged
@@ -34,7 +40,7 @@ public class OrderServiceImpl implements OrderService {
     public PagedResult<OrderInfo> getAllOrders(int page, int size) {
         GGetAllOrdersResponse response = rpcOrderServiceClient.getAllOrders(
                 GGetAllOrdersRequest.newBuilder()
-                        //.setAuthentication(internalAuthService.getGAuthentication())
+                        .setAuthentication(AuthConverter.toGAuthentication(internalAuthService.getInternalAuthentication()))
                         .setPageable(CommonConverter.convert(page, size))
                         .build());
 
@@ -46,7 +52,7 @@ public class OrderServiceImpl implements OrderService {
     public List<OrderInfo> getAllOrdersByCustomer(UUID customerUid) {
         return rpcOrderServiceClient.getAllOrdersByCustomer(
                 GGetAllOrdersByCustomerRequest.newBuilder()
-                        //.setAuthentication(internalAuthService.getGAuthentication())
+                        .setAuthentication(AuthConverter.toGAuthentication(internalAuthService.getInternalAuthentication()))
                         .build())
                 .getOrdersList()
                 .stream()
@@ -60,7 +66,7 @@ public class OrderServiceImpl implements OrderService {
         return OrderInfoConverter.convert(
                 rpcOrderServiceClient.getOrder(
                         GGetOrderRequest.newBuilder()
-                                //.setAuthentication(internalAuthService.getGAuthentication())
+                                .setAuthentication(AuthConverter.toGAuthentication(internalAuthService.getInternalAuthentication()))
                                 .setOrderUid(CommonConverter.convert(orderUid))
                                 .build())
                         .getOrder());
@@ -71,15 +77,21 @@ public class OrderServiceImpl implements OrderService {
     public UUID addOrder(AddOrderRequest request) {
         return CommonConverter.convert(
                 rpcOrderServiceClient.addOrder(
-                        OrderInfoConverter.convert(request))
-                        .getOrderUid());
+                        GAddOrderRequest.newBuilder()
+                                .setAuthentication(AuthConverter.toGAuthentication(internalAuthService.getInternalAuthentication()))
+                                .setOrder(OrderInfoConverter.convert(request))
+                                .build())
+                .getOrderUid());
     }
 
     @Logged
     @Override
     public void updateOrder(UpdateOrderRequest request) {
         rpcOrderServiceClient.updateOrder(
-                OrderInfoConverter.convert(request));
+                GUpdateOrderRequest.newBuilder()
+                        .setAuthentication(AuthConverter.toGAuthentication(internalAuthService.getInternalAuthentication()))
+                        .setOrder(OrderInfoConverter.convert(request))
+                        .build());
     }
 
     @Logged
@@ -87,6 +99,7 @@ public class OrderServiceImpl implements OrderService {
     public void removeOrder(UUID orderUid) {
         rpcOrderServiceClient.removeOrder(
                 GRemoveOrderRequest.newBuilder()
+                        .setAuthentication(AuthConverter.toGAuthentication(internalAuthService.getInternalAuthentication()))
                         .setOrderUid(CommonConverter.convert(orderUid))
                         .build());
     }
@@ -96,6 +109,7 @@ public class OrderServiceImpl implements OrderService {
     public void removeAllOrdersByCustomer(UUID customerUid) {
         rpcOrderServiceClient.removeAllOrdersByCustomer(
                 GRemoveAllOrdersByCustomerRequest.newBuilder()
+                        .setAuthentication(AuthConverter.toGAuthentication(internalAuthService.getInternalAuthentication()))
                         .setCustomerUid(CommonConverter.convert(customerUid))
                         .build());
     }

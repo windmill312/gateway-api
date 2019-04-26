@@ -1,15 +1,13 @@
 package com.github.windmill312.gateway.converter;
 
 import com.github.windmill312.common.grpc.model.GPage;
-import com.github.windmill312.order.grpc.model.v1.GAddOrderRequest;
-import com.github.windmill312.order.grpc.model.v1.GOrderInfo;
-import com.github.windmill312.order.grpc.model.v1.GUpdateOrderRequest;
 import com.github.windmill312.gateway.web.to.common.PagedResult;
 import com.github.windmill312.gateway.web.to.in.AddOrderRequest;
 import com.github.windmill312.gateway.web.to.in.UpdateOrderRequest;
 import com.github.windmill312.gateway.web.to.in.common.OrderProducts;
 import com.github.windmill312.gateway.web.to.in.common.OrderStatus;
 import com.github.windmill312.gateway.web.to.out.OrderInfo;
+import com.github.windmill312.order.grpc.model.v1.GOrderInfo;
 
 import java.time.Instant;
 import java.util.List;
@@ -61,34 +59,30 @@ public class OrderInfoConverter {
     }
 
 
-    public static GAddOrderRequest convert(AddOrderRequest request) {
-        return GAddOrderRequest.newBuilder()
-                .setOrder(GOrderInfo.newBuilder()
-                        .setStatus(convert(request.getStatus()))
-                        .setCafeUid(CommonConverter.convert(request.getCafeUid()))
-                        .setCustomerUid(CommonConverter.convert(request.getCustomerUid()))
-                        .addAllProducts(request.getProducts().stream()
-                                .map(OrderInfoConverter::convert)
-                                .collect(Collectors.toSet()))
-                        .setPrice(request.getTotalPrice())
-                        .setReceiveMills(request.getReceiveDttm().toEpochMilli())
-                        .build())
+    public static GOrderInfo convert(AddOrderRequest request) {
+        return GOrderInfo.newBuilder()
+                .setStatus(convert(request.getStatus()))
+                .setCafeUid(CommonConverter.convert(request.getCafeUid()))
+                .setCustomerUid(CommonConverter.convert(request.getCustomerUid()))
+                .addAllProducts(request.getProducts().stream()
+                        .map(OrderInfoConverter::convert)
+                        .collect(Collectors.toSet()))
+                .setPrice(request.getTotalPrice())
+                .setReceiveMills(request.getReceiveDttm().toEpochMilli())
                 .build();
     }
 
-    public static GUpdateOrderRequest convert(UpdateOrderRequest request) {
-        return GUpdateOrderRequest.newBuilder()
-                .setOrder(GOrderInfo.newBuilder()
-                        .setOrderUid(CommonConverter.convert(request.getOrderUid()))
-                        .setStatus(convert(request.getStatus()))
-                        .setCafeUid(CommonConverter.convert(request.getCafeUid()))
-                        .setCustomerUid(CommonConverter.convert(request.getCustomerUid()))
-                        .addAllProducts(request.getProducts().stream()
-                                .map(OrderInfoConverter::convert)
-                                .collect(Collectors.toSet()))
-                        .setPrice(request.getTotalPrice())
-                        .setReceiveMills(request.getReceiveDttm().toEpochMilli())
-                        .build())
+    public static GOrderInfo convert(UpdateOrderRequest request) {
+        return GOrderInfo.newBuilder()
+                .setOrderUid(CommonConverter.convert(request.getOrderUid()))
+                .setStatus(convert(request.getStatus()))
+                .setCafeUid(CommonConverter.convert(request.getCafeUid()))
+                .setCustomerUid(CommonConverter.convert(request.getCustomerUid()))
+                .addAllProducts(request.getProducts().stream()
+                        .map(OrderInfoConverter::convert)
+                        .collect(Collectors.toSet()))
+                .setPrice(request.getTotalPrice())
+                .setReceiveMills(request.getReceiveDttm().toEpochMilli())
                 .build();
     }
 }

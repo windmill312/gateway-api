@@ -1,26 +1,28 @@
-package com.github.windmill312.gateway.web.to.out;
+package com.github.windmill312.gateway.security.model;
 
-import com.fasterxml.jackson.annotation.JsonGetter;
-
-public class LoginInfo {
-
+public class FullAuthentication {
     private String accessToken;
     private String refreshToken;
+    private Principal principal;
 
-    public LoginInfo(
+    public FullAuthentication(
             String accessToken,
-            String refreshToken) {
+            String refreshToken,
+            Principal principal) {
         this.accessToken = accessToken;
         this.refreshToken = refreshToken;
+        this.principal = principal;
     }
 
-    @JsonGetter("responseToken")
     public String getRefreshToken() {
         return refreshToken;
     }
 
-    @JsonGetter("accessToken")
     public String getAccessToken() {
         return accessToken;
+    }
+
+    public Principal getPrincipal() {
+        return principal;
     }
 }

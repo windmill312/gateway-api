@@ -3,6 +3,7 @@ package com.github.windmill312.gateway.service.impl;
 import com.github.windmill312.coffeehouse.grpc.model.v1.*;
 import com.github.windmill312.gateway.annotation.GatewayService;
 import com.github.windmill312.gateway.annotation.Logged;
+import com.github.windmill312.gateway.converter.AuthConverter;
 import com.github.windmill312.gateway.converter.CoffeeHouseInfoConverter;
 import com.github.windmill312.gateway.converter.CommonConverter;
 import com.github.windmill312.gateway.grpc.client.GRpcCoffeeHouseServiceClient;
@@ -47,7 +48,7 @@ public class CoffeeHouseServiceImpl implements CoffeeHouseService {
 
         GGetAllCafesResponse response = rpcCoffeeHouseServiceClient.getAllCafes(
                 GGetAllCafesRequest.newBuilder()
-                        .setAuthentication(internalAuthService.getGAuthentication())
+                        .setAuthentication(AuthConverter.toGAuthentication(internalAuthService.getInternalAuthentication()))
                         .setPageable(CommonConverter.convert(page, size))
                         .build());
 
@@ -58,7 +59,7 @@ public class CoffeeHouseServiceImpl implements CoffeeHouseService {
     private PagedResult<CoffeeHouseInfo> getAllCafesByLongitudeAndLatitudeInternal(Double latitude, Double longitude, int page, int size) {
         GGetAllCafesAroundClientResponse response = rpcCoffeeHouseServiceClient.getAllCafesAroundClient(
                 GGetAllCafesAroundClientRequest.newBuilder()
-                        .setAuthentication(internalAuthService.getGAuthentication())
+                        .setAuthentication(AuthConverter.toGAuthentication(internalAuthService.getInternalAuthentication()))
                         .setLocation(CommonConverter.convert(latitude, longitude))
                         .setPageable(CommonConverter.convert(page, size))
                         .build());
@@ -72,7 +73,7 @@ public class CoffeeHouseServiceImpl implements CoffeeHouseService {
         return CoffeeHouseInfoConverter.convert(
                 rpcCoffeeHouseServiceClient.getCafe(
                         GGetCafeRequest.newBuilder()
-                                .setAuthentication(internalAuthService.getGAuthentication())
+                                .setAuthentication(AuthConverter.toGAuthentication(internalAuthService.getInternalAuthentication()))
                                 .setCafeUid(CommonConverter.convert(cafeUid))
                                 .build())
                         .getCafe());
@@ -84,7 +85,7 @@ public class CoffeeHouseServiceImpl implements CoffeeHouseService {
         return CommonConverter.convert(
                 rpcCoffeeHouseServiceClient.addCafe(
                         GAddCafeRequest.newBuilder()
-                                .setAuthentication(internalAuthService.getGAuthentication())
+                                .setAuthentication(AuthConverter.toGAuthentication(internalAuthService.getInternalAuthentication()))
                                 .setCafe(CoffeeHouseInfoConverter.convert(request))
                                 .build())
                         .getCafeUid());
@@ -95,7 +96,7 @@ public class CoffeeHouseServiceImpl implements CoffeeHouseService {
     public void updateCafe(UpdateCoffeeHouseRequest request) {
         rpcCoffeeHouseServiceClient.updateCafe(
                 GUpdateCafeRequest.newBuilder()
-                        .setAuthentication(internalAuthService.getGAuthentication())
+                        .setAuthentication(AuthConverter.toGAuthentication(internalAuthService.getInternalAuthentication()))
                         .setCafe(CoffeeHouseInfoConverter.convert(request))
                         .build());
     }
@@ -105,7 +106,7 @@ public class CoffeeHouseServiceImpl implements CoffeeHouseService {
     public void removeCafe(UUID cafeUid) {
         rpcCoffeeHouseServiceClient.removeCafe(
                 GRemoveCafeRequest.newBuilder()
-                        .setAuthentication(internalAuthService.getGAuthentication())
+                        .setAuthentication(AuthConverter.toGAuthentication(internalAuthService.getInternalAuthentication()))
                         .setCafeUid(CommonConverter.convert(cafeUid))
                         .build());
     }

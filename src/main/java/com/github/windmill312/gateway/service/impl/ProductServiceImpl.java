@@ -2,6 +2,7 @@ package com.github.windmill312.gateway.service.impl;
 
 import com.github.windmill312.gateway.annotation.GatewayService;
 import com.github.windmill312.gateway.annotation.Logged;
+import com.github.windmill312.gateway.converter.AuthConverter;
 import com.github.windmill312.gateway.converter.CommonConverter;
 import com.github.windmill312.gateway.converter.ProductInfoConverter;
 import com.github.windmill312.gateway.grpc.client.GRpcProductServiceClient;
@@ -39,7 +40,7 @@ public class ProductServiceImpl implements ProductService {
     public PagedResult<ProductInfo> getAllProducts(int page, int size) {
         GGetAllProductsResponse response = rpcProductServiceClient.getAllProducts(
                 GGetAllProductsRequest.newBuilder()
-                        .setAuthentication(internalAuthService.getGAuthentication())
+                        .setAuthentication(AuthConverter.toGAuthentication(internalAuthService.getInternalAuthentication()))
                         .setPageable(CommonConverter.convert(page, size))
                         .build());
 
@@ -51,7 +52,7 @@ public class ProductServiceImpl implements ProductService {
     public List<ProductInfo> getProductsByCafe(UUID cafeUid) {
         return rpcProductServiceClient.getAllProducts(
                 GGetAllProductsRequest.newBuilder()
-                        .setAuthentication(internalAuthService.getGAuthentication())
+                        .setAuthentication(AuthConverter.toGAuthentication(internalAuthService.getInternalAuthentication()))
                         .build())
                 .getProductsList()
                 .stream()
@@ -65,7 +66,7 @@ public class ProductServiceImpl implements ProductService {
         return ProductInfoConverter.convert(
                 rpcProductServiceClient.getProduct(
                         GGetProductRequest.newBuilder()
-                                .setAuthentication(internalAuthService.getGAuthentication())
+                                .setAuthentication(AuthConverter.toGAuthentication(internalAuthService.getInternalAuthentication()))
                                 .setProductUid(CommonConverter.convert(productUid))
                                 .build())
                         .getProduct());
@@ -77,7 +78,7 @@ public class ProductServiceImpl implements ProductService {
         return CommonConverter.convert(
                 rpcProductServiceClient.addProduct(
                         GAddProductRequest.newBuilder()
-                            .setAuthentication(internalAuthService.getGAuthentication())
+                                .setAuthentication(AuthConverter.toGAuthentication(internalAuthService.getInternalAuthentication()))
                             .setProduct(ProductInfoConverter.convert(request))
                             .build()
                         )
@@ -89,7 +90,7 @@ public class ProductServiceImpl implements ProductService {
     public void updateProduct(UpdateProductRequest request) {
         rpcProductServiceClient.updateProduct(
                 GUpdateProductRequest.newBuilder()
-                    .setAuthentication(internalAuthService.getGAuthentication())
+                        .setAuthentication(AuthConverter.toGAuthentication(internalAuthService.getInternalAuthentication()))
                     .setProduct(ProductInfoConverter.convert(request))
                     .build());
     }
@@ -109,7 +110,7 @@ public class ProductServiceImpl implements ProductService {
     public void unlinkCafeAndProduct(UUID cafeUid, UUID productUid) {
         rpcProductServiceClient.unlinkProductAndCafe(
                 GUnlinkProductAndCafeRequest.newBuilder()
-                        .setAuthentication(internalAuthService.getGAuthentication())
+                        .setAuthentication(AuthConverter.toGAuthentication(internalAuthService.getInternalAuthentication()))
                         .setProductUid(CommonConverter.convert(productUid))
                         .setCafeUid(CommonConverter.convert(cafeUid))
                         .build());
@@ -120,7 +121,7 @@ public class ProductServiceImpl implements ProductService {
     public void removeProduct(UUID productUid) {
         rpcProductServiceClient.removeProduct(
                 GRemoveProductRequest.newBuilder()
-                        .setAuthentication(internalAuthService.getGAuthentication())
+                        .setAuthentication(AuthConverter.toGAuthentication(internalAuthService.getInternalAuthentication()))
                         .setProductUid(CommonConverter.convert(productUid))
                         .build());
     }
@@ -130,7 +131,7 @@ public class ProductServiceImpl implements ProductService {
     public void removeAllProductsByCafe(UUID cafeUid) {
         rpcProductServiceClient.removeProductsByCafe(
                 GRemoveProductsByCafeRequest.newBuilder()
-                        .setAuthentication(internalAuthService.getGAuthentication())
+                        .setAuthentication(AuthConverter.toGAuthentication(internalAuthService.getInternalAuthentication()))
                         .setCafeUid(CommonConverter.convert(cafeUid))
                         .build());
     }

@@ -15,6 +15,7 @@ import com.github.windmill312.gateway.security.InternalAuthService;
 import com.github.windmill312.gateway.security.TokenConfig;
 import com.github.windmill312.gateway.security.model.Authentication;
 import com.github.windmill312.gateway.security.model.AuthenticationToken;
+import com.github.windmill312.gateway.security.model.FullAuthentication;
 import com.github.windmill312.gateway.security.model.Principal;
 import com.github.windmill312.gateway.service.AuthenticationService;
 import com.github.windmill312.gateway.web.to.in.LoginCustomerRequest;
@@ -57,23 +58,23 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         GPrincipalOuterKey principalKey = getPrincipalKey(request);
         GToken token = generateToken();
 
-        Authentication authentication = AuthConverter.toAuthentication(
+        FullAuthentication authentication = AuthConverter.toFullAuthentication(
                 rpcAuthServiceClient.authenticateAny(
                         GAuthenticateAnyRequest.newBuilder()
-                                .setAuthentication(internalAuthService.getGAuthentication())
+                                .setAuthentication(AuthConverter.toGAuthentication(internalAuthService.getInternalAuthentication()))
                                 .setToken(token)
                                 .setPrincipalKey(principalKey)
                                 .build())
                         .getAuthentication());
 
-        return new LoginInfo(authentication.getToken());
+        return new LoginInfo(authentication.getAccessToken(), authentication.getRefreshToken());
     }
 
     @Override
     public void logout(AuthenticationToken authentication) {
         rpcAuthServiceClient.revokeAuthentication(
                 GRevokeAuthenticationRequest.newBuilder()
-                        .setAuthentication(internalAuthService.getGAuthentication())
+                        .setAuthentication(AuthConverter.toGAuthentication(internalAuthService.getInternalAuthentication()))
                         .setToken(authentication.getToken())
                         .build());
     }
@@ -83,7 +84,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         return AuthConverter.toAuthentication(
                 rpcAuthServiceClient.getAuthentication(
                         GGetAuthenticationRequest.newBuilder()
-                                .setAuthentication(internalAuthService.getGAuthentication())
+                                .setAuthentication(AuthConverter.toGAuthentication(internalAuthService.getInternalAuthentication()))
                                 .setToken(token)
                                 .build())
                         .getAuthentication());
@@ -97,7 +98,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     private GPrincipalOuterKey getPrincipalKey(LoginCustomerRequest request) {
         return rpcCredentialsServiceClient.getPrincipalOuterKey(
                 GGetPrincipalOuterKeyRequest.newBuilder()
-                        .setAuthentication(internalAuthService.getGAuthentication())
+                        .setAuthentication(AuthConverter.toGAuthentication(internalAuthService.getInternalAuthentication()))
                         .setCredentials(AuthConverter.toGCredentials(request))
                         .build())
                 .getPrincipalKey();
@@ -106,7 +107,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     private GToken generateToken() {
         return rpcAuthServiceClient.generateToken(
                 GGenerateTokenRequest.newBuilder()
-                        .setAuthentication(internalAuthService.getGAuthentication())
+                        .setAuthentication(AuthConverter.toGAuthentication(internalAuthService.getInternalAuthentication()))
                         .setTokenTtlSeconds(tokenConfig.getTokenTtlSeconds())
                         .build())
                 .getToken();
