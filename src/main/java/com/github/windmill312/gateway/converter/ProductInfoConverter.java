@@ -6,9 +6,7 @@ import com.github.windmill312.gateway.web.to.in.AddProductRequest;
 import com.github.windmill312.gateway.web.to.in.UpdateProductRequest;
 import com.github.windmill312.gateway.web.to.out.ProductInfo;
 import com.github.windmill312.gateway.web.to.out.common.ProductGroup;
-import com.github.windmill312.product.grpc.model.v1.GAddProductRequest;
 import com.github.windmill312.product.grpc.model.v1.GProductInfo;
-import com.github.windmill312.product.grpc.model.v1.GUpdateProductRequest;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -41,26 +39,22 @@ public class ProductInfoConverter {
         return GProductInfo.GProductGroup.valueOf(group.name());
     }
 
-    public static GAddProductRequest convert(AddProductRequest request) {
-        return GAddProductRequest.newBuilder()
-                .setProduct(GProductInfo.newBuilder()
-                        .setGroup(convert(request.getProductGroup()))
-                        .setName(request.getName())
-                        .setPrice(request.getPrice())
-                        .setDescription(request.getDescription())
-                )
+    public static GProductInfo convert(AddProductRequest request) {
+        return GProductInfo.newBuilder()
+                    .setGroup(convert(request.getProductGroup()))
+                    .setName(request.getName())
+                    .setPrice(request.getPrice())
+                    .setDescription(request.getDescription())
                 .build();
     }
 
-    public static GUpdateProductRequest convert(UpdateProductRequest request) {
-        return GUpdateProductRequest.newBuilder()
-                .setProduct(GProductInfo.newBuilder()
-                        .setProductUid(CommonConverter.convert(request.getProductUid()))
-                        .setGroup(convert(request.getProductGroup()))
-                        .setName(request.getName())
-                        .setPrice(request.getPrice())
-                        .setDescription(request.getDescription())
-                )
+    public static GProductInfo convert(UpdateProductRequest request) {
+        return GProductInfo.newBuilder()
+                    .setProductUid(CommonConverter.convert(request.getProductUid()))
+                    .setGroup(convert(request.getProductGroup()))
+                    .setName(request.getName())
+                    .setPrice(request.getPrice())
+                    .setDescription(request.getDescription())
                 .build();
     }
 }

@@ -54,7 +54,7 @@ public class CustomerServiceImpl implements CustomerService {
     public PagedResult<CustomerFullInfo> getAllCustomers(int page, int size) {
         GGetAllCustomersResponse response = rpcCustomerServiceClient.getAllCustomers(
                 GGetAllCustomersRequest.newBuilder()
-                        //.setAuthentication(internalAuthService.getGAuthentication())
+                        .setAuthentication(internalAuthService.getGAuthentication())
                         .setPageable(CommonConverter.convert(page, size))
                         .build());
 
@@ -67,6 +67,7 @@ public class CustomerServiceImpl implements CustomerService {
         return CustomerInfoConverter.convert(
                 rpcCustomerServiceClient.getCustomer(
                         GGetCustomerRequest.newBuilder()
+                                .setAuthentication(internalAuthService.getGAuthentication())
                                 .setCustomerUid(
                                         CommonConverter.convert(customerUid)).build()
                 ).getCustomer()

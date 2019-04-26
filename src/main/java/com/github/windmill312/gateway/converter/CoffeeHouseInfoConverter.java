@@ -1,9 +1,7 @@
 package com.github.windmill312.gateway.converter;
 
-import com.github.windmill312.coffeehouse.grpc.model.v1.GAddCafeRequest;
 import com.github.windmill312.coffeehouse.grpc.model.v1.GCafeInfo;
 import com.github.windmill312.coffeehouse.grpc.model.v1.GLocation;
-import com.github.windmill312.coffeehouse.grpc.model.v1.GUpdateCafeRequest;
 import com.github.windmill312.common.grpc.model.GPage;
 import com.github.windmill312.gateway.web.to.common.PagedResult;
 import com.github.windmill312.gateway.web.to.in.AddCoffeeHouseRequest;
@@ -34,32 +32,30 @@ public class CoffeeHouseInfoConverter {
                 CommonConverter.convert(cafeInfo.getOwnerUid()));
     }
 
-    public static GAddCafeRequest convert(AddCoffeeHouseRequest request) {
-        return GAddCafeRequest.newBuilder()
-                .setCafe(GCafeInfo.newBuilder()
-                        .setLocation(
-                                GLocation.newBuilder()
-                                        .setLongitude(request.getLongitude())
-                                        .setLatitude(request.getLatitude())
-                                        .build())
-                        .setOwnerUid(CommonConverter.convert(request.getOwnerUid()))
-                        .setDescription(request.getDescription())
-                        .setCafeName(request.getName()))
+    public static GCafeInfo convert(AddCoffeeHouseRequest request) {
+        return GCafeInfo.newBuilder()
+                    .setLocation(
+                            GLocation.newBuilder()
+                                    .setLongitude(request.getLongitude())
+                                    .setLatitude(request.getLatitude())
+                                    .build())
+                    .setOwnerUid(CommonConverter.convert(request.getOwnerUid()))
+                    .setDescription(request.getDescription())
+                    .setCafeName(request.getName())
                 .build();
     }
 
-    public static GUpdateCafeRequest convert(UpdateCoffeeHouseRequest request) {
-        return GUpdateCafeRequest.newBuilder()
-                .setCafe(GCafeInfo.newBuilder()
-                        .setCafeUid(CommonConverter.convert(request.getCafeUid()))
-                        .setLocation(
-                                GLocation.newBuilder()
-                                        .setLongitude(request.getLongitude())
-                                        .setLatitude(request.getLatitude())
-                                        .build())
-                        .setOwnerUid(CommonConverter.convert(request.getOwnerUid()))
-                        .setDescription(request.getDescription())
-                        .setCafeName(request.getName()))
+    public static GCafeInfo convert(UpdateCoffeeHouseRequest request) {
+        return GCafeInfo.newBuilder()
+                    .setCafeUid(CommonConverter.convert(request.getCafeUid()))
+                    .setLocation(
+                            GLocation.newBuilder()
+                                    .setLongitude(request.getLongitude())
+                                    .setLatitude(request.getLatitude())
+                                    .build())
+                    .setOwnerUid(CommonConverter.convert(request.getOwnerUid()))
+                    .setDescription(request.getDescription())
+                    .setCafeName(request.getName())
                 .build();
     }
 
