@@ -14,7 +14,7 @@ public class LoginInfo {
         this.refreshToken = refreshToken;
     }
 
-    @JsonGetter("responseToken")
+    @JsonGetter("refreshToken")
     public String getRefreshToken() {
         return refreshToken;
     }

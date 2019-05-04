@@ -7,6 +7,7 @@ import com.github.windmill312.gateway.service.CustomerService;
 import com.github.windmill312.gateway.web.to.common.PagedResult;
 import com.github.windmill312.gateway.web.to.in.AddCustomerRequest;
 import com.github.windmill312.gateway.web.to.in.LoginCustomerRequest;
+import com.github.windmill312.gateway.web.to.in.UpdateTokenRequest;
 import com.github.windmill312.gateway.web.to.out.AddCustomerInfo;
 import com.github.windmill312.gateway.web.to.out.CustomerFullInfo;
 import com.github.windmill312.gateway.web.to.out.CustomerInfo;
@@ -42,13 +43,11 @@ public class CustomersController {
 
     @PostMapping(path = "/login", consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public ResponseEntity<LoginInfo> login(
-            @RequestBody @Valid LoginCustomerRequest loginUserRequest,
-            HttpServletRequest httpServletRequest,
-            HttpServletResponse httpServletResponse) {
+            @RequestBody @Valid LoginCustomerRequest loginUserRequest) {
 
         logger.debug("Getting request to login by user: {}", loginUserRequest.getIdentifier());
 
-        return ResponseEntity.ok(authenticationService.login(loginUserRequest, httpServletRequest, httpServletResponse));
+        return ResponseEntity.ok(authenticationService.login(loginUserRequest));
     }
 
     @PostMapping(path = "/logout")
@@ -85,11 +84,18 @@ public class CustomersController {
         return ResponseEntity.ok(customerService.getCustomerByUid(uuid));
     }
 
-    @PostMapping(path = "/register", consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @PostMapping(path = "/signup", consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public ResponseEntity<AddCustomerInfo> addCustomer(@RequestBody @Valid AddCustomerRequest request) {
         logger.debug("Adding customer with name: {}", request.getName());
 
         return ResponseEntity.ok(new AddCustomerInfo(customerService.addCustomer(request)));
+    }
+
+    @PostMapping(path = "/refresh", consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public ResponseEntity<LoginInfo> refreshToken(@RequestBody @Valid UpdateTokenRequest request) {
+        logger.debug("Updating customer token by customerUid:{}", request.getCustomerUid());
+
+        return ResponseEntity.ok(authenticationService.refreshToken(request));
     }
 
     /*@PostMapping(path = "/admin", consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)

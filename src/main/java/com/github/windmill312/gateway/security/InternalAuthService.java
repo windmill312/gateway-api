@@ -1,12 +1,10 @@
 package com.github.windmill312.gateway.security;
 
 import com.github.windmill312.auth.grpc.model.v1.GAuthenticateServiceRequest;
-import com.github.windmill312.auth.grpc.model.v1.GAuthentication;
 import com.github.windmill312.auth.grpc.model.v1.GFullAuthentication;
 import com.github.windmill312.auth.grpc.model.v1.GGetAuthenticationRequest;
 import com.github.windmill312.gateway.converter.AuthConverter;
 import com.github.windmill312.gateway.grpc.client.GRpcAuthServiceClient;
-import com.github.windmill312.gateway.security.model.Authentication;
 import com.github.windmill312.gateway.security.model.FullAuthentication;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

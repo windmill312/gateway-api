@@ -38,8 +38,9 @@ public class SecurityTokenAdapter extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
                 .antMatchers(HttpMethod.OPTIONS).permitAll()
                 .antMatchers(
-                        "/api/v1/customer/register",
+                        "/api/v1/customer/signup",
                         "/api/v1/customer/login",
+                        "/api/v1/customer/refresh",
                         "/api/v1/oauth",
                         "/api/v1/oauth/token",
                         "/api/v1/oauth/refresh")

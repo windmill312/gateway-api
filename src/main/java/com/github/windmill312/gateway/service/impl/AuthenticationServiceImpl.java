@@ -7,6 +7,7 @@ import com.github.windmill312.auth.grpc.model.v1.GGetPrincipalOuterKeyRequest;
 import com.github.windmill312.auth.grpc.model.v1.GPrincipalOuterKey;
 import com.github.windmill312.auth.grpc.model.v1.GRevokeAuthenticationRequest;
 import com.github.windmill312.auth.grpc.model.v1.GToken;
+import com.github.windmill312.auth.grpc.model.v1.GUpdateTokenRequest;
 import com.github.windmill312.gateway.annotation.GatewayService;
 import com.github.windmill312.gateway.converter.AuthConverter;
 import com.github.windmill312.gateway.grpc.client.GRpcAuthServiceClient;
@@ -19,6 +20,7 @@ import com.github.windmill312.gateway.security.model.FullAuthentication;
 import com.github.windmill312.gateway.security.model.Principal;
 import com.github.windmill312.gateway.service.AuthenticationService;
 import com.github.windmill312.gateway.web.to.in.LoginCustomerRequest;
+import com.github.windmill312.gateway.web.to.in.UpdateTokenRequest;
 import com.github.windmill312.gateway.web.to.out.CustomerInfo;
 import com.github.windmill312.gateway.web.to.out.LoginInfo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -51,9 +53,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
     @Override
     public LoginInfo login(
-            LoginCustomerRequest request,
-            HttpServletRequest httpServletRequest,
-            HttpServletResponse httpServletResponse) {
+            LoginCustomerRequest request) {
 
         GPrincipalOuterKey principalKey = getPrincipalKey(request);
         GToken token = generateToken();
@@ -93,6 +93,26 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     @Override
     public CustomerInfo getCustomerInfo(Principal principal) {
         return new CustomerInfo(principal.getExtId());
+    }
+
+    @Override
+    public LoginInfo refreshToken(UpdateTokenRequest request) {
+        GToken token = generateToken();
+
+        FullAuthentication authentication = AuthConverter.toFullAuthentication(
+                rpcAuthServiceClient.updateToken(
+                        GUpdateTokenRequest.newBuilder()
+                                .setAuthentication(AuthConverter.toGAuthentication(internalAuthService.getInternalAuthentication()))
+                                .setToken(token)
+                                .setPrincipalKey(
+                                        GPrincipalOuterKey.newBuilder()
+                                            .setSubsystemCode("20")
+                                            .setExtId(request.getCustomerUid().toString())
+                                            .build())
+                                .build())
+                        .getAuthentication());
+
+        return new LoginInfo(authentication.getAccessToken(), authentication.getRefreshToken());
     }
 
     private GPrincipalOuterKey getPrincipalKey(LoginCustomerRequest request) {

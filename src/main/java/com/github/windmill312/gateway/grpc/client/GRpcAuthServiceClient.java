@@ -4,11 +4,13 @@ import com.github.windmill312.auth.grpc.model.v1.GAuthenticateAnyRequest;
 import com.github.windmill312.auth.grpc.model.v1.GAuthenticateAnyResponse;
 import com.github.windmill312.auth.grpc.model.v1.GAuthenticateServiceRequest;
 import com.github.windmill312.auth.grpc.model.v1.GAuthenticateServiceResponse;
+import com.github.windmill312.auth.grpc.model.v1.GFullAuthentication;
 import com.github.windmill312.auth.grpc.model.v1.GGenerateTokenRequest;
 import com.github.windmill312.auth.grpc.model.v1.GGenerateTokenResponse;
 import com.github.windmill312.auth.grpc.model.v1.GGetAuthenticationRequest;
 import com.github.windmill312.auth.grpc.model.v1.GGetAuthenticationResponse;
 import com.github.windmill312.auth.grpc.model.v1.GRevokeAuthenticationRequest;
+import com.github.windmill312.auth.grpc.model.v1.GUpdateTokenRequest;
 import com.github.windmill312.auth.grpc.service.v1.AuthServiceV1Grpc;
 import com.github.windmill312.common.grpc.model.Empty;
 import io.grpc.ManagedChannel;
@@ -52,6 +54,10 @@ public class GRpcAuthServiceClient {
 
     public GGetAuthenticationResponse getAuthentication(GGetAuthenticationRequest request) {
         return authServiceV1BlockingStub.getAuthentication(request);
+    }
+
+    public GAuthenticateAnyResponse updateToken(GUpdateTokenRequest request) {
+        return authServiceV1BlockingStub.updateToken(request);
     }
 
     public Empty revokeAuthentication(GRevokeAuthenticationRequest request) {

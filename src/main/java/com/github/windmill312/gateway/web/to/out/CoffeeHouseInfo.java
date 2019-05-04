@@ -6,20 +6,20 @@ import java.util.UUID;
 
 public class CoffeeHouseInfo {
 
-    private UUID uidCafe = UUID.randomUUID();
+    private UUID cafeUid = UUID.randomUUID();
     private Double latitude;
     private Double longitude;
     private String name;
     private String description;
     private UUID ownerUid;
 
-    public CoffeeHouseInfo(UUID uidCafe,
+    public CoffeeHouseInfo(UUID cafeUid,
                            Double latitude,
                            Double longitude,
                            String name,
                            String description,
                            UUID ownerUid) {
-        this.uidCafe = uidCafe;
+        this.cafeUid = cafeUid;
         this.latitude = latitude;
         this.longitude = longitude;
         this.name = name;
@@ -27,9 +27,9 @@ public class CoffeeHouseInfo {
         this.ownerUid = ownerUid;
     }
 
-    @JsonGetter("uidCafe")
-    public UUID getUidCafe() {
-        return uidCafe;
+    @JsonGetter("cafeUid")
+    public UUID getCafeUid() {
+        return cafeUid;
     }
 
     @JsonGetter("latitude")
