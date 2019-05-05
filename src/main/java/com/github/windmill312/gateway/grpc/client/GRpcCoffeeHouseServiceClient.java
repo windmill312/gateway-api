@@ -1,6 +1,15 @@
 package com.github.windmill312.gateway.grpc.client;
 
-import com.github.windmill312.coffeehouse.grpc.model.v1.*;
+import com.github.windmill312.coffeehouse.grpc.model.v1.GAddCafeRequest;
+import com.github.windmill312.coffeehouse.grpc.model.v1.GAddCafeResponse;
+import com.github.windmill312.coffeehouse.grpc.model.v1.GGetAllCafesAroundClientRequest;
+import com.github.windmill312.coffeehouse.grpc.model.v1.GGetAllCafesAroundClientResponse;
+import com.github.windmill312.coffeehouse.grpc.model.v1.GGetAllCafesRequest;
+import com.github.windmill312.coffeehouse.grpc.model.v1.GGetAllCafesResponse;
+import com.github.windmill312.coffeehouse.grpc.model.v1.GGetCafeRequest;
+import com.github.windmill312.coffeehouse.grpc.model.v1.GGetCafeResponse;
+import com.github.windmill312.coffeehouse.grpc.model.v1.GRemoveCafeRequest;
+import com.github.windmill312.coffeehouse.grpc.model.v1.GUpdateCafeRequest;
 import com.github.windmill312.coffeehouse.grpc.service.v1.CoffeeHouseServiceV1Grpc;
 import com.github.windmill312.common.grpc.model.Empty;
 import io.grpc.ManagedChannel;

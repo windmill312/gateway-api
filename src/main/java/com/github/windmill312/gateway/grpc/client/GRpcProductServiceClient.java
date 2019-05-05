@@ -1,7 +1,19 @@
 package com.github.windmill312.gateway.grpc.client;
 
 import com.github.windmill312.common.grpc.model.Empty;
-import com.github.windmill312.product.grpc.model.v1.*;
+import com.github.windmill312.product.grpc.model.v1.GAddProductRequest;
+import com.github.windmill312.product.grpc.model.v1.GAddProductResponse;
+import com.github.windmill312.product.grpc.model.v1.GGetAllProductsRequest;
+import com.github.windmill312.product.grpc.model.v1.GGetAllProductsResponse;
+import com.github.windmill312.product.grpc.model.v1.GGetProductRequest;
+import com.github.windmill312.product.grpc.model.v1.GGetProductResponse;
+import com.github.windmill312.product.grpc.model.v1.GGetProductsByCafeRequest;
+import com.github.windmill312.product.grpc.model.v1.GGetProductsByCafeResponse;
+import com.github.windmill312.product.grpc.model.v1.GLinkProductAndCafeRequest;
+import com.github.windmill312.product.grpc.model.v1.GRemoveProductRequest;
+import com.github.windmill312.product.grpc.model.v1.GRemoveProductsByCafeRequest;
+import com.github.windmill312.product.grpc.model.v1.GUnlinkProductAndCafeRequest;
+import com.github.windmill312.product.grpc.model.v1.GUpdateProductRequest;
 import com.github.windmill312.product.grpc.service.v1.ProductServiceV1Grpc;
 import io.grpc.ManagedChannel;
 import io.grpc.ManagedChannelBuilder;

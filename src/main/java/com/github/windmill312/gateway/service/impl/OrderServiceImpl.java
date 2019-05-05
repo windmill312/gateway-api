@@ -1,18 +1,25 @@
 package com.github.windmill312.gateway.service.impl;
 
-import com.github.windmill312.gateway.converter.AuthConverter;
-import com.github.windmill312.gateway.security.InternalAuthService;
-import com.github.windmill312.order.grpc.model.v1.*;
 import com.github.windmill312.gateway.annotation.GatewayService;
 import com.github.windmill312.gateway.annotation.Logged;
+import com.github.windmill312.gateway.converter.AuthConverter;
 import com.github.windmill312.gateway.converter.CommonConverter;
 import com.github.windmill312.gateway.converter.OrderInfoConverter;
 import com.github.windmill312.gateway.grpc.client.GRpcOrderServiceClient;
+import com.github.windmill312.gateway.security.InternalAuthService;
 import com.github.windmill312.gateway.service.OrderService;
 import com.github.windmill312.gateway.web.to.common.PagedResult;
 import com.github.windmill312.gateway.web.to.in.AddOrderRequest;
 import com.github.windmill312.gateway.web.to.in.UpdateOrderRequest;
 import com.github.windmill312.gateway.web.to.out.OrderInfo;
+import com.github.windmill312.order.grpc.model.v1.GAddOrderRequest;
+import com.github.windmill312.order.grpc.model.v1.GGetAllOrdersByCustomerRequest;
+import com.github.windmill312.order.grpc.model.v1.GGetAllOrdersRequest;
+import com.github.windmill312.order.grpc.model.v1.GGetAllOrdersResponse;
+import com.github.windmill312.order.grpc.model.v1.GGetOrderRequest;
+import com.github.windmill312.order.grpc.model.v1.GRemoveAllOrdersByCustomerRequest;
+import com.github.windmill312.order.grpc.model.v1.GRemoveOrderRequest;
+import com.github.windmill312.order.grpc.model.v1.GUpdateOrderRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
@@ -53,6 +60,7 @@ public class OrderServiceImpl implements OrderService {
         return rpcOrderServiceClient.getAllOrdersByCustomer(
                 GGetAllOrdersByCustomerRequest.newBuilder()
                         .setAuthentication(AuthConverter.toGAuthentication(internalAuthService.getInternalAuthentication()))
+                        .setCustomerUid(CommonConverter.convert(customerUid))
                         .build())
                 .getOrdersList()
                 .stream()
@@ -81,7 +89,7 @@ public class OrderServiceImpl implements OrderService {
                                 .setAuthentication(AuthConverter.toGAuthentication(internalAuthService.getInternalAuthentication()))
                                 .setOrder(OrderInfoConverter.convert(request))
                                 .build())
-                .getOrderUid());
+                        .getOrderUid());
     }
 
     @Logged

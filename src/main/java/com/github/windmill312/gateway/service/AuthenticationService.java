@@ -5,7 +5,7 @@ import com.github.windmill312.gateway.security.model.AuthenticationToken;
 import com.github.windmill312.gateway.security.model.Principal;
 import com.github.windmill312.gateway.web.to.in.LoginCustomerRequest;
 import com.github.windmill312.gateway.web.to.in.UpdateTokenRequest;
-import com.github.windmill312.gateway.web.to.out.CustomerInfo;
+import com.github.windmill312.gateway.web.to.out.CustomerFullInfo;
 import com.github.windmill312.gateway.web.to.out.LoginInfo;
 
 public interface AuthenticationService {
@@ -16,7 +16,7 @@ public interface AuthenticationService {
 
     void logout(AuthenticationToken authentication);
 
-    CustomerInfo getCustomerInfo(Principal principal);
+    CustomerFullInfo getCustomerInfo(Principal principal);
 
     LoginInfo refreshToken(UpdateTokenRequest request);
 }

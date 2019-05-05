@@ -12,7 +12,15 @@ import com.github.windmill312.gateway.web.to.common.PagedResult;
 import com.github.windmill312.gateway.web.to.in.AddProductRequest;
 import com.github.windmill312.gateway.web.to.in.UpdateProductRequest;
 import com.github.windmill312.gateway.web.to.out.ProductInfo;
-import com.github.windmill312.product.grpc.model.v1.*;
+import com.github.windmill312.product.grpc.model.v1.GAddProductRequest;
+import com.github.windmill312.product.grpc.model.v1.GGetAllProductsRequest;
+import com.github.windmill312.product.grpc.model.v1.GGetAllProductsResponse;
+import com.github.windmill312.product.grpc.model.v1.GGetProductRequest;
+import com.github.windmill312.product.grpc.model.v1.GLinkProductAndCafeRequest;
+import com.github.windmill312.product.grpc.model.v1.GRemoveProductRequest;
+import com.github.windmill312.product.grpc.model.v1.GRemoveProductsByCafeRequest;
+import com.github.windmill312.product.grpc.model.v1.GUnlinkProductAndCafeRequest;
+import com.github.windmill312.product.grpc.model.v1.GUpdateProductRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
@@ -79,9 +87,9 @@ public class ProductServiceImpl implements ProductService {
                 rpcProductServiceClient.addProduct(
                         GAddProductRequest.newBuilder()
                                 .setAuthentication(AuthConverter.toGAuthentication(internalAuthService.getInternalAuthentication()))
-                            .setProduct(ProductInfoConverter.convert(request))
-                            .build()
-                        )
+                                .setProduct(ProductInfoConverter.convert(request))
+                                .build()
+                )
                         .getProductUid());
     }
 
@@ -91,8 +99,8 @@ public class ProductServiceImpl implements ProductService {
         rpcProductServiceClient.updateProduct(
                 GUpdateProductRequest.newBuilder()
                         .setAuthentication(AuthConverter.toGAuthentication(internalAuthService.getInternalAuthentication()))
-                    .setProduct(ProductInfoConverter.convert(request))
-                    .build());
+                        .setProduct(ProductInfoConverter.convert(request))
+                        .build());
     }
 
     @Logged

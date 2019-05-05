@@ -34,28 +34,28 @@ public class CoffeeHouseInfoConverter {
 
     public static GCafeInfo convert(AddCoffeeHouseRequest request) {
         return GCafeInfo.newBuilder()
-                    .setLocation(
-                            GLocation.newBuilder()
-                                    .setLongitude(request.getLongitude())
-                                    .setLatitude(request.getLatitude())
-                                    .build())
-                    .setOwnerUid(CommonConverter.convert(request.getOwnerUid()))
-                    .setDescription(request.getDescription())
-                    .setCafeName(request.getName())
+                .setLocation(
+                        GLocation.newBuilder()
+                                .setLongitude(request.getLongitude())
+                                .setLatitude(request.getLatitude())
+                                .build())
+                .setOwnerUid(CommonConverter.convert(request.getOwnerUid()))
+                .setDescription(request.getDescription())
+                .setCafeName(request.getName())
                 .build();
     }
 
     public static GCafeInfo convert(UpdateCoffeeHouseRequest request) {
         return GCafeInfo.newBuilder()
-                    .setCafeUid(CommonConverter.convert(request.getCafeUid()))
-                    .setLocation(
-                            GLocation.newBuilder()
-                                    .setLongitude(request.getLongitude())
-                                    .setLatitude(request.getLatitude())
-                                    .build())
-                    .setOwnerUid(CommonConverter.convert(request.getOwnerUid()))
-                    .setDescription(request.getDescription())
-                    .setCafeName(request.getName())
+                .setCafeUid(CommonConverter.convert(request.getCafeUid()))
+                .setLocation(
+                        GLocation.newBuilder()
+                                .setLongitude(request.getLongitude())
+                                .setLatitude(request.getLatitude())
+                                .build())
+                .setOwnerUid(CommonConverter.convert(request.getOwnerUid()))
+                .setDescription(request.getDescription())
+                .setCafeName(request.getName())
                 .build();
     }
 

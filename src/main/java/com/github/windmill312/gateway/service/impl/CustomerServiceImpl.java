@@ -2,10 +2,8 @@ package com.github.windmill312.gateway.service.impl;
 
 import com.github.windmill312.auth.grpc.model.v1.GAddCredentialsRequest;
 import com.github.windmill312.auth.grpc.model.v1.GAddPrincipalRequest;
-import com.github.windmill312.auth.grpc.model.v1.GAuthenticateAnyRequest;
 import com.github.windmill312.auth.grpc.model.v1.GDeletePrincipalRequest;
 import com.github.windmill312.auth.grpc.model.v1.GPrincipalOuterKey;
-import com.github.windmill312.auth.grpc.model.v1.GToken;
 import com.github.windmill312.customer.grpc.model.v1.GGetAllCustomersRequest;
 import com.github.windmill312.customer.grpc.model.v1.GGetAllCustomersResponse;
 import com.github.windmill312.customer.grpc.model.v1.GGetCustomerRequest;
@@ -18,13 +16,10 @@ import com.github.windmill312.gateway.grpc.client.GRpcCredentialsServiceClient;
 import com.github.windmill312.gateway.grpc.client.GRpcCustomerServiceClient;
 import com.github.windmill312.gateway.grpc.client.GRpcPrincipalServiceClient;
 import com.github.windmill312.gateway.security.InternalAuthService;
-import com.github.windmill312.gateway.security.model.FullAuthentication;
 import com.github.windmill312.gateway.service.CustomerService;
 import com.github.windmill312.gateway.web.to.common.PagedResult;
 import com.github.windmill312.gateway.web.to.in.AddCustomerRequest;
-import com.github.windmill312.gateway.web.to.in.UpdateTokenRequest;
 import com.github.windmill312.gateway.web.to.out.CustomerFullInfo;
-import com.github.windmill312.gateway.web.to.out.LoginInfo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -102,7 +97,7 @@ public class CustomerServiceImpl implements CustomerService {
                     rpcCustomerServiceClient.addCustomer(CustomerInfoConverter.convert(
                             request,
                             UUID.fromString(principal.getExtId())))
-                    .getCustomerUid());
+                            .getCustomerUid());
 
         } catch (Exception ex) {
             logger.warn("Failed to add customer: " + principal.getExtId());

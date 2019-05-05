@@ -1,9 +1,9 @@
 package com.github.windmill312.gateway.aop;
 
+import com.github.windmill312.gateway.annotation.Logged;
 import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.CacheLoader;
 import com.google.common.cache.LoadingCache;
-import com.github.windmill312.gateway.annotation.Logged;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.Signature;
 import org.aspectj.lang.annotation.AfterThrowing;

@@ -21,12 +21,9 @@ import com.github.windmill312.gateway.security.model.Principal;
 import com.github.windmill312.gateway.service.AuthenticationService;
 import com.github.windmill312.gateway.web.to.in.LoginCustomerRequest;
 import com.github.windmill312.gateway.web.to.in.UpdateTokenRequest;
-import com.github.windmill312.gateway.web.to.out.CustomerInfo;
+import com.github.windmill312.gateway.web.to.out.CustomerFullInfo;
 import com.github.windmill312.gateway.web.to.out.LoginInfo;
 import org.springframework.beans.factory.annotation.Autowired;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
 import static com.github.windmill312.gateway.exception.model.Service.AUTH;
 
@@ -34,6 +31,7 @@ import static com.github.windmill312.gateway.exception.model.Service.AUTH;
 public class AuthenticationServiceImpl implements AuthenticationService {
 
     private final InternalAuthService internalAuthService;
+    private final CustomerServiceImpl customerService;
     private final TokenConfig tokenConfig;
     private final GRpcAuthServiceClient rpcAuthServiceClient;
     private final GRpcCredentialsServiceClient rpcCredentialsServiceClient;
@@ -41,11 +39,13 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     @Autowired
     public AuthenticationServiceImpl(
             InternalAuthService internalAuthService,
+            CustomerServiceImpl customerService,
             TokenConfig tokenConfig,
             GRpcAuthServiceClient rpcAuthServiceClient,
             GRpcCredentialsServiceClient rpcCredentialsServiceClient) {
 
         this.internalAuthService = internalAuthService;
+        this.customerService = customerService;
         this.tokenConfig = tokenConfig;
         this.rpcAuthServiceClient = rpcAuthServiceClient;
         this.rpcCredentialsServiceClient = rpcCredentialsServiceClient;
@@ -67,7 +67,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
                                 .build())
                         .getAuthentication());
 
-        return new LoginInfo(authentication.getAccessToken(), authentication.getRefreshToken());
+        return new LoginInfo(authentication.getAccessToken(), authentication.getRefreshToken(), authentication.getPrincipal().getExtId());
     }
 
     @Override
@@ -91,8 +91,8 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     }
 
     @Override
-    public CustomerInfo getCustomerInfo(Principal principal) {
-        return new CustomerInfo(principal.getExtId());
+    public CustomerFullInfo getCustomerInfo(Principal principal) {
+        return customerService.getCustomerByUid(principal.getExtId());
     }
 
     @Override
@@ -106,13 +106,13 @@ public class AuthenticationServiceImpl implements AuthenticationService {
                                 .setToken(token)
                                 .setPrincipalKey(
                                         GPrincipalOuterKey.newBuilder()
-                                            .setSubsystemCode("20")
-                                            .setExtId(request.getCustomerUid().toString())
-                                            .build())
+                                                .setSubsystemCode("20")
+                                                .setExtId(request.getCustomerUid().toString())
+                                                .build())
                                 .build())
                         .getAuthentication());
 
-        return new LoginInfo(authentication.getAccessToken(), authentication.getRefreshToken());
+        return new LoginInfo(authentication.getAccessToken(), authentication.getRefreshToken(), authentication.getPrincipal().getExtId());
     }
 
     private GPrincipalOuterKey getPrincipalKey(LoginCustomerRequest request) {

@@ -4,7 +4,6 @@ import com.github.windmill312.auth.grpc.model.v1.GAuthenticateAnyRequest;
 import com.github.windmill312.auth.grpc.model.v1.GAuthenticateAnyResponse;
 import com.github.windmill312.auth.grpc.model.v1.GAuthenticateServiceRequest;
 import com.github.windmill312.auth.grpc.model.v1.GAuthenticateServiceResponse;
-import com.github.windmill312.auth.grpc.model.v1.GFullAuthentication;
 import com.github.windmill312.auth.grpc.model.v1.GGenerateTokenRequest;
 import com.github.windmill312.auth.grpc.model.v1.GGenerateTokenResponse;
 import com.github.windmill312.auth.grpc.model.v1.GGetAuthenticationRequest;

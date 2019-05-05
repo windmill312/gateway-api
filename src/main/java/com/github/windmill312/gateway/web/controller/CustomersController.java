@@ -10,17 +10,20 @@ import com.github.windmill312.gateway.web.to.in.LoginCustomerRequest;
 import com.github.windmill312.gateway.web.to.in.UpdateTokenRequest;
 import com.github.windmill312.gateway.web.to.out.AddCustomerInfo;
 import com.github.windmill312.gateway.web.to.out.CustomerFullInfo;
-import com.github.windmill312.gateway.web.to.out.CustomerInfo;
 import com.github.windmill312.gateway.web.to.out.LoginInfo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import java.util.UUID;
 
@@ -61,7 +64,7 @@ public class CustomersController {
     }
 
     @GetMapping(path = "/me")
-    public ResponseEntity<CustomerInfo> me() {
+    public ResponseEntity<CustomerFullInfo> me() {
         logger.debug("Getting info for current customer");
 
         return ResponseEntity.ok(authenticationService.getCustomerInfo(SecurityContextUtil.getPrincipal()));

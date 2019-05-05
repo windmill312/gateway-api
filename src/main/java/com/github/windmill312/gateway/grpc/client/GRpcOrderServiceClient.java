@@ -1,7 +1,17 @@
 package com.github.windmill312.gateway.grpc.client;
 
 import com.github.windmill312.common.grpc.model.Empty;
-import com.github.windmill312.order.grpc.model.v1.*;
+import com.github.windmill312.order.grpc.model.v1.GAddOrderRequest;
+import com.github.windmill312.order.grpc.model.v1.GAddOrderResponse;
+import com.github.windmill312.order.grpc.model.v1.GGetAllOrdersByCustomerRequest;
+import com.github.windmill312.order.grpc.model.v1.GGetAllOrdersByCustomerResponse;
+import com.github.windmill312.order.grpc.model.v1.GGetAllOrdersRequest;
+import com.github.windmill312.order.grpc.model.v1.GGetAllOrdersResponse;
+import com.github.windmill312.order.grpc.model.v1.GGetOrderRequest;
+import com.github.windmill312.order.grpc.model.v1.GGetOrderResponse;
+import com.github.windmill312.order.grpc.model.v1.GRemoveAllOrdersByCustomerRequest;
+import com.github.windmill312.order.grpc.model.v1.GRemoveOrderRequest;
+import com.github.windmill312.order.grpc.model.v1.GUpdateOrderRequest;
 import com.github.windmill312.order.grpc.service.v1.OrderServiceV1Grpc;
 import io.grpc.ManagedChannel;
 import io.grpc.ManagedChannelBuilder;

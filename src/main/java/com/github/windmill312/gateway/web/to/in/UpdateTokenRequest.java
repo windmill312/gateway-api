@@ -2,7 +2,6 @@ package com.github.windmill312.gateway.web.to.in;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.github.windmill312.gateway.web.to.out.common.ProductGroup;
 import io.swagger.annotations.ApiModelProperty;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 

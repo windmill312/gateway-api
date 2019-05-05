@@ -41,20 +41,20 @@ public class ProductInfoConverter {
 
     public static GProductInfo convert(AddProductRequest request) {
         return GProductInfo.newBuilder()
-                    .setGroup(convert(request.getProductGroup()))
-                    .setName(request.getName())
-                    .setPrice(request.getPrice())
-                    .setDescription(request.getDescription())
+                .setGroup(convert(request.getProductGroup()))
+                .setName(request.getName())
+                .setPrice(request.getPrice())
+                .setDescription(request.getDescription())
                 .build();
     }
 
     public static GProductInfo convert(UpdateProductRequest request) {
         return GProductInfo.newBuilder()
-                    .setProductUid(CommonConverter.convert(request.getProductUid()))
-                    .setGroup(convert(request.getProductGroup()))
-                    .setName(request.getName())
-                    .setPrice(request.getPrice())
-                    .setDescription(request.getDescription())
+                .setProductUid(CommonConverter.convert(request.getProductUid()))
+                .setGroup(convert(request.getProductGroup()))
+                .setName(request.getName())
+                .setPrice(request.getPrice())
+                .setDescription(request.getDescription())
                 .build();
     }
 }

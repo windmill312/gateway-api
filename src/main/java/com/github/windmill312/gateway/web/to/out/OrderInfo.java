@@ -55,7 +55,7 @@ public class OrderInfo {
         return products;
     }
 
-    @JsonGetter("productUid")
+    @JsonGetter("totalPrice")
     public Double getTotalPrice() {
         return totalPrice;
     }

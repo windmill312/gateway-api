@@ -1,6 +1,11 @@
 package com.github.windmill312.gateway.grpc.client;
 
-import com.github.windmill312.customer.grpc.model.v1.*;
+import com.github.windmill312.customer.grpc.model.v1.GAddCustomerRequest;
+import com.github.windmill312.customer.grpc.model.v1.GAddCustomerResponse;
+import com.github.windmill312.customer.grpc.model.v1.GGetAllCustomersRequest;
+import com.github.windmill312.customer.grpc.model.v1.GGetAllCustomersResponse;
+import com.github.windmill312.customer.grpc.model.v1.GGetCustomerRequest;
+import com.github.windmill312.customer.grpc.model.v1.GGetCustomerResponse;
 import com.github.windmill312.customer.grpc.service.v1.CustomerServiceV1Grpc;
 import io.grpc.ManagedChannel;
 import io.grpc.ManagedChannelBuilder;
