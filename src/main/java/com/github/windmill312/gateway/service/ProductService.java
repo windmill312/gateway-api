@@ -12,7 +12,7 @@ public interface ProductService {
 
     PagedResult<ProductInfo> getAllProducts(int page, int size);
 
-    List<ProductInfo> getProductsByCafe(UUID cafeUid);
+    PagedResult<ProductInfo> getProductsByCafe(UUID cafeUid, int page, int size);
 
     ProductInfo getProductByUid(UUID productUid);
 

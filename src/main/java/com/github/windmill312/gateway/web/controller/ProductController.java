@@ -24,6 +24,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
+import java.awt.print.Pageable;
 import java.util.List;
 import java.util.UUID;
 
@@ -51,11 +52,13 @@ public class ProductController {
     }
 
     @GetMapping(path = "/cafe/{uuid}")
-    public ResponseEntity<List<ProductInfo>> getProductsByCafe(
-            @PathVariable UUID uuid) {
+    public ResponseEntity<PagedResult<ProductInfo>> getProductsByCafe(
+            @PathVariable UUID uuid,
+            @RequestParam(value = "page", defaultValue = "0") int page,
+            @RequestParam(value = "size", defaultValue = "20") int size) {
         logger.debug("Getting all products by cafe: {}", uuid);
 
-        return ResponseEntity.ok(productService.getProductsByCafe(uuid));
+        return ResponseEntity.ok(productService.getProductsByCafe(uuid, page, size));
     }
 
     @GetMapping(path = "/{uuid}")

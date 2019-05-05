@@ -16,6 +16,8 @@ import com.github.windmill312.product.grpc.model.v1.GAddProductRequest;
 import com.github.windmill312.product.grpc.model.v1.GGetAllProductsRequest;
 import com.github.windmill312.product.grpc.model.v1.GGetAllProductsResponse;
 import com.github.windmill312.product.grpc.model.v1.GGetProductRequest;
+import com.github.windmill312.product.grpc.model.v1.GGetProductsByCafeRequest;
+import com.github.windmill312.product.grpc.model.v1.GGetProductsByCafeResponse;
 import com.github.windmill312.product.grpc.model.v1.GLinkProductAndCafeRequest;
 import com.github.windmill312.product.grpc.model.v1.GRemoveProductRequest;
 import com.github.windmill312.product.grpc.model.v1.GRemoveProductsByCafeRequest;
@@ -57,15 +59,15 @@ public class ProductServiceImpl implements ProductService {
 
     @Logged
     @Override
-    public List<ProductInfo> getProductsByCafe(UUID cafeUid) {
-        return rpcProductServiceClient.getAllProducts(
-                GGetAllProductsRequest.newBuilder()
+    public PagedResult<ProductInfo> getProductsByCafe(UUID cafeUid, int page, int size) {
+        GGetProductsByCafeResponse response = rpcProductServiceClient.getProductsByCafe(
+                GGetProductsByCafeRequest.newBuilder()
                         .setAuthentication(AuthConverter.toGAuthentication(internalAuthService.getInternalAuthentication()))
-                        .build())
-                .getProductsList()
-                .stream()
-                .map(ProductInfoConverter::convert)
-                .collect(Collectors.toList());
+                        .setCafeUid(CommonConverter.convert(cafeUid))
+                        .setPageable(CommonConverter.convert(page, size))
+                        .build());
+
+        return ProductInfoConverter.convert(response.getProductsList(), response.getPage());
     }
 
     @Logged

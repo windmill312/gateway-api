@@ -50,7 +50,7 @@ public class GRpcProductServiceClient {
         return productServiceV1BlockingStub.getAllProducts(request);
     }
 
-    public GGetProductsByCafeResponse getAllProducts(GGetProductsByCafeRequest request) {
+    public GGetProductsByCafeResponse getProductsByCafe(GGetProductsByCafeRequest request) {
         return productServiceV1BlockingStub.getProductsByCafe(request);
     }
 
