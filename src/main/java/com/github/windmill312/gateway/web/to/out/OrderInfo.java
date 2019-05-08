@@ -11,11 +11,12 @@ import java.util.UUID;
 
 public class OrderInfo {
 
-    private UUID orderUid = UUID.randomUUID();
+    private UUID orderUid;
     private UUID cafeUid;
     private UUID customerUid;
-    private Set<OrderProducts> products = new HashSet<>();
+    private Set<OrderProducts> products;
     private Double totalPrice;
+    private Instant createDttm;
     private Instant receiveDttm;
     private OrderStatus status;
 
@@ -24,6 +25,7 @@ public class OrderInfo {
                      UUID customerUid,
                      Set<OrderProducts> products,
                      Double totalPrice,
+                     Instant createDttm,
                      Instant receiveDttm,
                      OrderStatus status) {
         this.orderUid = orderUid;
@@ -31,6 +33,7 @@ public class OrderInfo {
         this.customerUid = customerUid;
         this.products = products;
         this.totalPrice = totalPrice;
+        this.createDttm = createDttm;
         this.receiveDttm = receiveDttm;
         this.status = status;
     }
@@ -58,6 +61,11 @@ public class OrderInfo {
     @JsonGetter("totalPrice")
     public Double getTotalPrice() {
         return totalPrice;
+    }
+
+    @JsonGetter("createDttm")
+    public Instant getCreateDttm() {
+        return createDttm;
     }
 
     @JsonGetter("receiveDttm")
