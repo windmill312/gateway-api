@@ -4,6 +4,7 @@ import com.github.windmill312.auth.grpc.model.v1.GAuthentication;
 import com.github.windmill312.auth.grpc.model.v1.GCredentials;
 import com.github.windmill312.auth.grpc.model.v1.GFingerPrint;
 import com.github.windmill312.auth.grpc.model.v1.GFullAuthentication;
+import com.github.windmill312.auth.grpc.model.v1.GGetPrincipalIdentifierResponse;
 import com.github.windmill312.auth.grpc.model.v1.GLogin;
 import com.github.windmill312.auth.grpc.model.v1.GOAuthRefreshTokenResponse;
 import com.github.windmill312.auth.grpc.model.v1.GOAuthTokenResponse;
@@ -14,6 +15,7 @@ import com.github.windmill312.gateway.security.model.Authentication;
 import com.github.windmill312.gateway.security.model.FullAuthentication;
 import com.github.windmill312.gateway.security.model.Principal;
 import com.github.windmill312.gateway.web.to.in.LoginCustomerRequest;
+import com.github.windmill312.gateway.web.to.out.IdentifierResponse;
 import com.github.windmill312.gateway.web.to.out.OAuthTokenResponse;
 
 import javax.servlet.http.HttpServletRequest;
@@ -118,5 +120,9 @@ public class AuthConverter {
                 .setType(GSecret.GSecretType.PASSWORD)
                 .setValue(secret)
                 .build();
+    }
+
+    public static IdentifierResponse convert(GGetPrincipalIdentifierResponse response) {
+        return new IdentifierResponse(response.getIdentifier());
     }
 }

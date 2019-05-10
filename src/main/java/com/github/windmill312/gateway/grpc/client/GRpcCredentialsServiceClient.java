@@ -1,6 +1,8 @@
 package com.github.windmill312.gateway.grpc.client;
 
 import com.github.windmill312.auth.grpc.model.v1.GAddCredentialsRequest;
+import com.github.windmill312.auth.grpc.model.v1.GGetPrincipalIdentifierRequest;
+import com.github.windmill312.auth.grpc.model.v1.GGetPrincipalIdentifierResponse;
 import com.github.windmill312.auth.grpc.model.v1.GGetPrincipalKeyResponse;
 import com.github.windmill312.auth.grpc.model.v1.GGetPrincipalOuterKeyRequest;
 import com.github.windmill312.auth.grpc.service.v1.CredentialsServiceV1Grpc;
@@ -38,5 +40,9 @@ public class GRpcCredentialsServiceClient {
 
     public Empty addCredentials(GAddCredentialsRequest request) {
         return credentialsServiceV1BlockingStub.addCredentials(request);
+    }
+
+    public GGetPrincipalIdentifierResponse getIdentifier(GGetPrincipalIdentifierRequest request) {
+        return credentialsServiceV1BlockingStub.getPrincipalIdentifier(request);
     }
 }

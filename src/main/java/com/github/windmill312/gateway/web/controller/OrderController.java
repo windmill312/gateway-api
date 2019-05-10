@@ -4,6 +4,7 @@ import com.github.windmill312.gateway.service.OrderService;
 import com.github.windmill312.gateway.web.to.common.PagedResult;
 import com.github.windmill312.gateway.web.to.in.AddOrderRequest;
 import com.github.windmill312.gateway.web.to.in.UpdateOrderRequest;
+import com.github.windmill312.gateway.web.to.in.UpdateOrderStatusRequest;
 import com.github.windmill312.gateway.web.to.out.AddOrderInfo;
 import com.github.windmill312.gateway.web.to.out.OrderInfo;
 import org.slf4j.Logger;
@@ -70,10 +71,20 @@ public class OrderController {
     }
 
     @PatchMapping(consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public ResponseEntity<Void> updateOrder(@RequestBody @Valid UpdateOrderRequest request) {
-        logger.debug("Updating order with uid: {}", request.getOrderUid());
+    public ResponseEntity<Void> updateOrderStatus(@RequestBody @Valid UpdateOrderStatusRequest request) {
+        logger.debug("Updating order status with uid: {} on {}", request.getOrderUid(), request.getStatus());
 
-        orderService.updateOrder(request);
+        orderService.updateOrderStatus(request);
+        return ResponseEntity.noContent().build();
+    }
+
+    @PatchMapping(path="/{uuid}", consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public ResponseEntity<Void> updateOrder(
+            @PathVariable UUID uuid,
+            @RequestBody @Valid UpdateOrderRequest request) {
+        logger.debug("Updating order with uid: {}", uuid);
+
+        orderService.updateOrder(uuid, request);
         return ResponseEntity.noContent().build();
     }
 

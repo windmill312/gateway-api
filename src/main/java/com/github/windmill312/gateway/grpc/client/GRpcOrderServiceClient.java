@@ -12,6 +12,7 @@ import com.github.windmill312.order.grpc.model.v1.GGetOrderResponse;
 import com.github.windmill312.order.grpc.model.v1.GRemoveAllOrdersByCustomerRequest;
 import com.github.windmill312.order.grpc.model.v1.GRemoveOrderRequest;
 import com.github.windmill312.order.grpc.model.v1.GUpdateOrderRequest;
+import com.github.windmill312.order.grpc.model.v1.GUpdateOrderStatusRequest;
 import com.github.windmill312.order.grpc.service.v1.OrderServiceV1Grpc;
 import io.grpc.ManagedChannel;
 import io.grpc.ManagedChannelBuilder;
@@ -58,6 +59,10 @@ public class GRpcOrderServiceClient {
 
     public Empty updateOrder(GUpdateOrderRequest request) {
         return orderServiceV1BlockingStub.updateOrder(request);
+    }
+
+    public Empty updateOrderStatus(GUpdateOrderStatusRequest request) {
+        return orderServiceV1BlockingStub.updateOrderStatus(request);
     }
 
     public Empty removeOrder(GRemoveOrderRequest request) {

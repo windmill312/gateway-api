@@ -3,11 +3,13 @@ package com.github.windmill312.gateway.service.impl;
 import com.github.windmill312.auth.grpc.model.v1.GAuthenticateAnyRequest;
 import com.github.windmill312.auth.grpc.model.v1.GGenerateTokenRequest;
 import com.github.windmill312.auth.grpc.model.v1.GGetAuthenticationRequest;
+import com.github.windmill312.auth.grpc.model.v1.GGetPrincipalIdentifierRequest;
 import com.github.windmill312.auth.grpc.model.v1.GGetPrincipalOuterKeyRequest;
 import com.github.windmill312.auth.grpc.model.v1.GPrincipalOuterKey;
 import com.github.windmill312.auth.grpc.model.v1.GRevokeAuthenticationRequest;
 import com.github.windmill312.auth.grpc.model.v1.GToken;
 import com.github.windmill312.auth.grpc.model.v1.GUpdateTokenRequest;
+import com.github.windmill312.common.grpc.model.GUuid;
 import com.github.windmill312.gateway.annotation.GatewayService;
 import com.github.windmill312.gateway.converter.AuthConverter;
 import com.github.windmill312.gateway.grpc.client.GRpcAuthServiceClient;
@@ -22,8 +24,11 @@ import com.github.windmill312.gateway.service.AuthenticationService;
 import com.github.windmill312.gateway.web.to.in.LoginCustomerRequest;
 import com.github.windmill312.gateway.web.to.in.UpdateTokenRequest;
 import com.github.windmill312.gateway.web.to.out.CustomerFullInfo;
+import com.github.windmill312.gateway.web.to.out.IdentifierResponse;
 import com.github.windmill312.gateway.web.to.out.LoginInfo;
 import org.springframework.beans.factory.annotation.Autowired;
+
+import java.util.UUID;
 
 import static com.github.windmill312.gateway.exception.model.Service.AUTH;
 
@@ -113,6 +118,15 @@ public class AuthenticationServiceImpl implements AuthenticationService {
                         .getAuthentication());
 
         return new LoginInfo(authentication.getAccessToken(), authentication.getRefreshToken(), authentication.getPrincipal().getExtId());
+    }
+
+    @Override
+    public IdentifierResponse getIdentifier(UUID principalUid) {
+        return AuthConverter.convert(rpcCredentialsServiceClient.getIdentifier(
+                GGetPrincipalIdentifierRequest.newBuilder()
+                        .setAuthentication(AuthConverter.toGAuthentication(internalAuthService.getInternalAuthentication()))
+                .setPrincipalUid(GUuid.newBuilder().setUuid(principalUid.toString()).build())
+                .build()));
     }
 
     private GPrincipalOuterKey getPrincipalKey(LoginCustomerRequest request) {

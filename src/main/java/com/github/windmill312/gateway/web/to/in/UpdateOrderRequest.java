@@ -17,10 +17,6 @@ public class UpdateOrderRequest {
 
     @NotNull
     @ApiModelProperty(example = "78a8a5d0-8830-4ce4-9176-6a5d7f3dae34")
-    private UUID orderUid;
-
-    @NotNull
-    @ApiModelProperty(example = "78a8a5d0-8830-4ce4-9176-6a5d7f3dae34")
     private UUID cafeUid;
 
     @NotNull
@@ -44,7 +40,6 @@ public class UpdateOrderRequest {
 
     @JsonCreator
     public UpdateOrderRequest(
-            @JsonProperty("orderUid") UUID orderUid,
             @JsonProperty("cafeUid") UUID cafeUid,
             @JsonProperty("customerUid") UUID customerUid,
             @JsonProperty("products") Set<OrderProducts> products,
@@ -52,7 +47,6 @@ public class UpdateOrderRequest {
             @JsonProperty("createDttm") Instant createDttm,
             @JsonProperty("receiveDttm") Instant receiveDttm,
             @JsonProperty("status") OrderStatus status) {
-        this.orderUid = orderUid;
         this.cafeUid = cafeUid;
         this.customerUid = customerUid;
         this.products = products;
@@ -60,10 +54,6 @@ public class UpdateOrderRequest {
         this.createDttm = createDttm;
         this.receiveDttm = receiveDttm;
         this.status = status;
-    }
-
-    public UUID getOrderUid() {
-        return orderUid;
     }
 
     public UUID getCafeUid() {

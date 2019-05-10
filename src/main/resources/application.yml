@@ -51,7 +51,7 @@ gateway:
       service-secret: "097cdd53-348c-40db-b445-8bcb7299ad35"
 
   oauth:
-    redirect-oauth-uri-template: "http://localhost:4000/oauth/authorize?clientId=%s&redirectUri=%s"
+    redirect-oauth-uri-template: "http://localhost:3000/oauth/authorize?clientId=%s&redirectUri=%s"
 
   grpc.client:
     CoffeeHouseServiceV1Grpc:

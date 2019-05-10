@@ -6,7 +6,10 @@ import com.github.windmill312.gateway.security.model.Principal;
 import com.github.windmill312.gateway.web.to.in.LoginCustomerRequest;
 import com.github.windmill312.gateway.web.to.in.UpdateTokenRequest;
 import com.github.windmill312.gateway.web.to.out.CustomerFullInfo;
+import com.github.windmill312.gateway.web.to.out.IdentifierResponse;
 import com.github.windmill312.gateway.web.to.out.LoginInfo;
+
+import java.util.UUID;
 
 public interface AuthenticationService {
 
@@ -19,4 +22,6 @@ public interface AuthenticationService {
     CustomerFullInfo getCustomerInfo(Principal principal);
 
     LoginInfo refreshToken(UpdateTokenRequest request);
+
+    IdentifierResponse getIdentifier(UUID request);
 }

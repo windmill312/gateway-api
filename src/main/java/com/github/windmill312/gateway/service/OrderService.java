@@ -3,6 +3,7 @@ package com.github.windmill312.gateway.service;
 import com.github.windmill312.gateway.web.to.common.PagedResult;
 import com.github.windmill312.gateway.web.to.in.AddOrderRequest;
 import com.github.windmill312.gateway.web.to.in.UpdateOrderRequest;
+import com.github.windmill312.gateway.web.to.in.UpdateOrderStatusRequest;
 import com.github.windmill312.gateway.web.to.out.OrderInfo;
 
 import java.util.List;
@@ -18,10 +19,11 @@ public interface OrderService {
 
     UUID addOrder(AddOrderRequest request);
 
-    void updateOrder(UpdateOrderRequest request);
+    void updateOrder(UUID orderUid, UpdateOrderRequest request);
 
     void removeOrder(UUID orderUid);
 
     void removeAllOrdersByCustomer(UUID customerUid);
 
+    void updateOrderStatus(UpdateOrderStatusRequest request);
 }

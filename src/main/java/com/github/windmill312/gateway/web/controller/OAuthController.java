@@ -29,7 +29,6 @@ import javax.validation.Valid;
 public class OAuthController {
 
     private static final Logger logger = LoggerFactory.getLogger(OAuthController.class);
-    private static final String AUTHORIZE_CALLBACK_URI_TEMPLATE = "%s://%s/callback?code=%s";
 
     private final OAuthConfig oAuthConfig;
     private final OAuthService oAuthService;
@@ -63,8 +62,7 @@ public class OAuthController {
         AuthenticationToken authentication = SecurityContextUtil.getAuthentication();
         OAuthCodeResponse codeResponse = oAuthService.authorize(clientId, authentication);
 
-        return String.format(AUTHORIZE_CALLBACK_URI_TEMPLATE,
-                httpServletRequest.getScheme(), redirectUri, codeResponse.getAuthorizationCode());
+        return codeResponse.getAuthorizationCode();
     }
 
     @PostMapping(value = "/token", consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)

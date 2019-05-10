@@ -8,9 +8,11 @@ import com.github.windmill312.gateway.web.to.in.common.OrderProducts;
 import com.github.windmill312.gateway.web.to.in.common.OrderStatus;
 import com.github.windmill312.gateway.web.to.out.OrderInfo;
 import com.github.windmill312.order.grpc.model.v1.GOrderInfo;
+import com.github.windmill312.order.grpc.model.v1.GOrderStatus;
 
 import java.time.Instant;
 import java.util.List;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 public class OrderInfoConverter {
@@ -38,12 +40,12 @@ public class OrderInfoConverter {
                 convert(orderInfo.getStatus()));
     }
 
-    private static OrderStatus convert(GOrderInfo.OrderStatus status) {
+    public static OrderStatus convert(GOrderStatus status) {
         return OrderStatus.valueOf(status.name());
     }
 
-    private static GOrderInfo.OrderStatus convert(OrderStatus status) {
-        return GOrderInfo.OrderStatus.valueOf(status.name());
+    public static GOrderStatus convert(OrderStatus status) {
+        return GOrderStatus.valueOf(status.name());
     }
 
     private static OrderProducts convert(GOrderInfo.OrderProduct c) {
@@ -73,9 +75,9 @@ public class OrderInfoConverter {
                 .build();
     }
 
-    public static GOrderInfo convert(UpdateOrderRequest request) {
+    public static GOrderInfo convert(UUID orderUid, UpdateOrderRequest request) {
         return GOrderInfo.newBuilder()
-                .setOrderUid(CommonConverter.convert(request.getOrderUid()))
+                .setOrderUid(CommonConverter.convert(orderUid))
                 .setStatus(convert(request.getStatus()))
                 .setCafeUid(CommonConverter.convert(request.getCafeUid()))
                 .setCustomerUid(CommonConverter.convert(request.getCustomerUid()))

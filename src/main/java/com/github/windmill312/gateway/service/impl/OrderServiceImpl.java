@@ -11,6 +11,7 @@ import com.github.windmill312.gateway.service.OrderService;
 import com.github.windmill312.gateway.web.to.common.PagedResult;
 import com.github.windmill312.gateway.web.to.in.AddOrderRequest;
 import com.github.windmill312.gateway.web.to.in.UpdateOrderRequest;
+import com.github.windmill312.gateway.web.to.in.UpdateOrderStatusRequest;
 import com.github.windmill312.gateway.web.to.out.OrderInfo;
 import com.github.windmill312.order.grpc.model.v1.GAddOrderRequest;
 import com.github.windmill312.order.grpc.model.v1.GGetAllOrdersByCustomerRequest;
@@ -20,6 +21,7 @@ import com.github.windmill312.order.grpc.model.v1.GGetOrderRequest;
 import com.github.windmill312.order.grpc.model.v1.GRemoveAllOrdersByCustomerRequest;
 import com.github.windmill312.order.grpc.model.v1.GRemoveOrderRequest;
 import com.github.windmill312.order.grpc.model.v1.GUpdateOrderRequest;
+import com.github.windmill312.order.grpc.model.v1.GUpdateOrderStatusRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
@@ -94,11 +96,22 @@ public class OrderServiceImpl implements OrderService {
 
     @Logged
     @Override
-    public void updateOrder(UpdateOrderRequest request) {
+    public void updateOrder(UUID orderUid, UpdateOrderRequest request) {
         rpcOrderServiceClient.updateOrder(
                 GUpdateOrderRequest.newBuilder()
                         .setAuthentication(AuthConverter.toGAuthentication(internalAuthService.getInternalAuthentication()))
-                        .setOrder(OrderInfoConverter.convert(request))
+                        .setOrder(OrderInfoConverter.convert(orderUid, request))
+                        .build());
+    }
+
+    @Logged
+    @Override
+    public void updateOrderStatus(UpdateOrderStatusRequest request) {
+        rpcOrderServiceClient.updateOrderStatus(
+                GUpdateOrderStatusRequest.newBuilder()
+                        .setAuthentication(AuthConverter.toGAuthentication(internalAuthService.getInternalAuthentication()))
+                        .setOrderUid(CommonConverter.convert(request.getOrderUid()))
+                        .setStatus(OrderInfoConverter.convert(request.getStatus()))
                         .build());
     }
 

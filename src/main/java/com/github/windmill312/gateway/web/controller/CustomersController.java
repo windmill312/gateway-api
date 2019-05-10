@@ -6,10 +6,12 @@ import com.github.windmill312.gateway.service.AuthenticationService;
 import com.github.windmill312.gateway.service.CustomerService;
 import com.github.windmill312.gateway.web.to.common.PagedResult;
 import com.github.windmill312.gateway.web.to.in.AddCustomerRequest;
+import com.github.windmill312.gateway.web.to.in.IdentifierRequest;
 import com.github.windmill312.gateway.web.to.in.LoginCustomerRequest;
 import com.github.windmill312.gateway.web.to.in.UpdateTokenRequest;
 import com.github.windmill312.gateway.web.to.out.AddCustomerInfo;
 import com.github.windmill312.gateway.web.to.out.CustomerFullInfo;
+import com.github.windmill312.gateway.web.to.out.IdentifierResponse;
 import com.github.windmill312.gateway.web.to.out.LoginInfo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -61,6 +63,13 @@ public class CustomersController {
 
         authenticationService.logout(authentication);
         return ResponseEntity.noContent().build();
+    }
+
+    @GetMapping(path = "/identifier/{principalUid}")
+    public ResponseEntity<IdentifierResponse> getIdentifier(@PathVariable UUID principalUid) {
+        logger.debug("Getting identifier for customer");
+
+        return ResponseEntity.ok(authenticationService.getIdentifier(principalUid));
     }
 
     @GetMapping(path = "/me")

@@ -39,6 +39,7 @@ public class SecurityTokenAdapter extends WebSecurityConfigurerAdapter {
                 .antMatchers(HttpMethod.OPTIONS).permitAll()
                 .antMatchers(HttpMethod.GET,
                         "/api/v1/coffeehouse",
+                        "api/v1/availability",
                         "/api/v1/product").permitAll()
                 .antMatchers(
                         "/api/v1/customer/signup",

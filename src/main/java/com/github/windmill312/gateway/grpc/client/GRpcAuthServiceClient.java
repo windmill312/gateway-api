@@ -8,6 +8,8 @@ import com.github.windmill312.auth.grpc.model.v1.GGenerateTokenRequest;
 import com.github.windmill312.auth.grpc.model.v1.GGenerateTokenResponse;
 import com.github.windmill312.auth.grpc.model.v1.GGetAuthenticationRequest;
 import com.github.windmill312.auth.grpc.model.v1.GGetAuthenticationResponse;
+import com.github.windmill312.auth.grpc.model.v1.GGetPrincipalIdentifierRequest;
+import com.github.windmill312.auth.grpc.model.v1.GGetPrincipalIdentifierResponse;
 import com.github.windmill312.auth.grpc.model.v1.GRevokeAuthenticationRequest;
 import com.github.windmill312.auth.grpc.model.v1.GUpdateTokenRequest;
 import com.github.windmill312.auth.grpc.service.v1.AuthServiceV1Grpc;
