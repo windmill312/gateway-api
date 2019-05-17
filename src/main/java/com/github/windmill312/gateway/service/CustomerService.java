@@ -13,4 +13,6 @@ public interface CustomerService {
     CustomerFullInfo getCustomerByUid(UUID customerUid);
 
     UUID addCustomer(AddCustomerRequest request);
+
+    void removeCustomer(UUID customerUid);
 }

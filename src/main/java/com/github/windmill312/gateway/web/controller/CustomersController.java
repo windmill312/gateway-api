@@ -6,7 +6,6 @@ import com.github.windmill312.gateway.service.AuthenticationService;
 import com.github.windmill312.gateway.service.CustomerService;
 import com.github.windmill312.gateway.web.to.common.PagedResult;
 import com.github.windmill312.gateway.web.to.in.AddCustomerRequest;
-import com.github.windmill312.gateway.web.to.in.IdentifierRequest;
 import com.github.windmill312.gateway.web.to.in.LoginCustomerRequest;
 import com.github.windmill312.gateway.web.to.in.UpdateTokenRequest;
 import com.github.windmill312.gateway.web.to.out.AddCustomerInfo;
@@ -18,6 +17,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -108,6 +108,14 @@ public class CustomersController {
         logger.debug("Updating customer token by customerUid:{}", request.getCustomerUid());
 
         return ResponseEntity.ok(authenticationService.refreshToken(request));
+    }
+
+    @DeleteMapping(path = "/{uuid}")
+    public ResponseEntity<LoginInfo> deleteCustomer(@PathVariable UUID uuid) {
+        logger.debug("Removing customer with uid:{}", uuid);
+
+        customerService.removeCustomer(uuid);
+        return ResponseEntity.noContent().build();
     }
 
     /*@PostMapping(path = "/admin", consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)

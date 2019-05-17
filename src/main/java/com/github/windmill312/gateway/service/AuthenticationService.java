@@ -24,4 +24,6 @@ public interface AuthenticationService {
     LoginInfo refreshToken(UpdateTokenRequest request);
 
     IdentifierResponse getIdentifier(UUID request);
+
+    void removePrincipal(UUID principalExtId);
 }

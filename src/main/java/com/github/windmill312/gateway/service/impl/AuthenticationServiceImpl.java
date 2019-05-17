@@ -1,6 +1,7 @@
 package com.github.windmill312.gateway.service.impl;
 
 import com.github.windmill312.auth.grpc.model.v1.GAuthenticateAnyRequest;
+import com.github.windmill312.auth.grpc.model.v1.GDeletePrincipalRequest;
 import com.github.windmill312.auth.grpc.model.v1.GGenerateTokenRequest;
 import com.github.windmill312.auth.grpc.model.v1.GGetAuthenticationRequest;
 import com.github.windmill312.auth.grpc.model.v1.GGetPrincipalIdentifierRequest;
@@ -14,6 +15,7 @@ import com.github.windmill312.gateway.annotation.GatewayService;
 import com.github.windmill312.gateway.converter.AuthConverter;
 import com.github.windmill312.gateway.grpc.client.GRpcAuthServiceClient;
 import com.github.windmill312.gateway.grpc.client.GRpcCredentialsServiceClient;
+import com.github.windmill312.gateway.grpc.client.GRpcPrincipalServiceClient;
 import com.github.windmill312.gateway.security.InternalAuthService;
 import com.github.windmill312.gateway.security.TokenConfig;
 import com.github.windmill312.gateway.security.model.Authentication;
@@ -40,6 +42,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     private final TokenConfig tokenConfig;
     private final GRpcAuthServiceClient rpcAuthServiceClient;
     private final GRpcCredentialsServiceClient rpcCredentialsServiceClient;
+    private final GRpcPrincipalServiceClient rpcPrincipalServiceClient;
 
     @Autowired
     public AuthenticationServiceImpl(
@@ -47,13 +50,15 @@ public class AuthenticationServiceImpl implements AuthenticationService {
             CustomerServiceImpl customerService,
             TokenConfig tokenConfig,
             GRpcAuthServiceClient rpcAuthServiceClient,
-            GRpcCredentialsServiceClient rpcCredentialsServiceClient) {
+            GRpcCredentialsServiceClient rpcCredentialsServiceClient,
+            GRpcPrincipalServiceClient rpcPrincipalServiceClient) {
 
         this.internalAuthService = internalAuthService;
         this.customerService = customerService;
         this.tokenConfig = tokenConfig;
         this.rpcAuthServiceClient = rpcAuthServiceClient;
         this.rpcCredentialsServiceClient = rpcCredentialsServiceClient;
+        this.rpcPrincipalServiceClient = rpcPrincipalServiceClient;
     }
 
     @Override
@@ -127,6 +132,15 @@ public class AuthenticationServiceImpl implements AuthenticationService {
                         .setAuthentication(AuthConverter.toGAuthentication(internalAuthService.getInternalAuthentication()))
                 .setPrincipalUid(GUuid.newBuilder().setUuid(principalUid.toString()).build())
                 .build()));
+    }
+
+    @Override
+    public void removePrincipal(UUID principalExtId) {
+        rpcPrincipalServiceClient.deletePrincipal(
+                GDeletePrincipalRequest.newBuilder()
+                        .setAuthentication(AuthConverter.toGAuthentication(internalAuthService.getInternalAuthentication()))
+                        .setPrincipalExtId(principalExtId.toString())
+                        .build());
     }
 
     private GPrincipalOuterKey getPrincipalKey(LoginCustomerRequest request) {

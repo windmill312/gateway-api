@@ -7,6 +7,7 @@ import com.github.windmill312.auth.grpc.model.v1.GPrincipalOuterKey;
 import com.github.windmill312.customer.grpc.model.v1.GGetAllCustomersRequest;
 import com.github.windmill312.customer.grpc.model.v1.GGetAllCustomersResponse;
 import com.github.windmill312.customer.grpc.model.v1.GGetCustomerRequest;
+import com.github.windmill312.customer.grpc.model.v1.GRemoveCustomerRequest;
 import com.github.windmill312.gateway.annotation.GatewayService;
 import com.github.windmill312.gateway.annotation.Logged;
 import com.github.windmill312.gateway.converter.AuthConverter;
@@ -15,6 +16,9 @@ import com.github.windmill312.gateway.converter.CustomerInfoConverter;
 import com.github.windmill312.gateway.grpc.client.GRpcCredentialsServiceClient;
 import com.github.windmill312.gateway.grpc.client.GRpcCustomerServiceClient;
 import com.github.windmill312.gateway.grpc.client.GRpcPrincipalServiceClient;
+import com.github.windmill312.gateway.redis.MessagePublisher;
+import com.github.windmill312.gateway.redis.model.Task;
+import com.github.windmill312.gateway.redis.model.Topic;
 import com.github.windmill312.gateway.security.InternalAuthService;
 import com.github.windmill312.gateway.service.CustomerService;
 import com.github.windmill312.gateway.web.to.common.PagedResult;
@@ -36,17 +40,20 @@ public class CustomerServiceImpl implements CustomerService {
     private final GRpcCustomerServiceClient rpcCustomerServiceClient;
     private final GRpcPrincipalServiceClient rpcPrincipalServiceClient;
     private final GRpcCredentialsServiceClient rpcCredentialsServiceClient;
+    private final MessagePublisher messagePublisher;
 
     @Autowired
     public CustomerServiceImpl(
             InternalAuthService internalAuthService,
             GRpcCustomerServiceClient rpcCustomerServiceClient,
             GRpcPrincipalServiceClient rpcPrincipalServiceClient,
-            GRpcCredentialsServiceClient rpcCredentialsServiceClient) {
+            GRpcCredentialsServiceClient rpcCredentialsServiceClient,
+            MessagePublisher messagePublisher) {
         this.internalAuthService = internalAuthService;
         this.rpcCustomerServiceClient = rpcCustomerServiceClient;
         this.rpcPrincipalServiceClient = rpcPrincipalServiceClient;
         this.rpcCredentialsServiceClient = rpcCredentialsServiceClient;
+        this.messagePublisher = messagePublisher;
     }
 
     @Logged
@@ -112,5 +119,18 @@ public class CustomerServiceImpl implements CustomerService {
 
             throw ex;
         }
+    }
+
+    @Override
+    public void removeCustomer(UUID customerUid) {
+        rpcCustomerServiceClient.removeCustomer(
+                        GRemoveCustomerRequest.newBuilder()
+                                .setAuthentication(AuthConverter.toGAuthentication(internalAuthService.getInternalAuthentication()))
+                                .setCustomerUid(
+                                        CommonConverter.convert(customerUid)).build());
+
+        messagePublisher.publish(
+                Topic.DELETE_PRINCIPAL_10.getName(),
+                new Task().setContent(customerUid.toString()));
     }
 }
